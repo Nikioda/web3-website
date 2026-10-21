@@ -3,60 +3,137 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vkon Motor Starter Panel — 3D Replica</title>
+  <title>Vkon Motor Starter & Citation Line Contactor — 3D Replica</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div id="app">
     <canvas id="canvas3d"></canvas>
 
-    <!-- Top Header Badge -->
+    <!-- Top Navigation -->
     <header class="top-nav">
       <div class="brand-badge">
         <div class="brand-dot"></div>
         <div class="brand-info">
-          <span class="brand-title">VKON AUTOMATION</span>
-          <span class="brand-subtitle">SASD 1/2/3 Control Panel · 3D Replica</span>
+          <span class="brand-title" id="showcaseTitle">VKON AUTOMATION</span>
+          <span class="brand-subtitle" id="showcaseSubtitle">SASD 1/2/3 Panel · Digital Twin</span>
         </div>
       </div>
+
+      <!-- Mode Switcher: Panel vs Contactor -->
+      <div class="mode-switch-group">
+        <button class="mode-pill active" id="modePanelBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8" cy="8" r="1.5"/></svg>
+          <span>Starter Panel</span>
+        </button>
+        <button class="mode-pill" id="modeContactorBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          <span>Citation Line Contactor</span>
+        </button>
+      </div>
+
       <div class="status-pill" id="systemStatusPill">
         <span class="status-dot green"></span>
         <span class="status-text">MAINS HEALTHY · 415V</span>
       </div>
     </header>
 
+    <!-- Contactor Specs Side Card (Active in Contactor Mode) -->
+    <div class="contactor-spec-card" id="contactorSpecCard">
+      <div class="spec-header">
+        <span class="spec-tag">OEM COMPONENT</span>
+        <h3 class="spec-title">CITATION LINE 16A</h3>
+        <p class="spec-sub">Heavy Duty 4-Pole Contactor</p>
+      </div>
+      <div class="spec-grid">
+        <div class="spec-item">
+          <span class="spec-lbl">Coil Voltage</span>
+          <span class="spec-val">280 / 440 V AC</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-lbl">Thermal Current (Ith)</span>
+          <span class="spec-val">25 Amps</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-lbl">AC-3 Rating</span>
+          <span class="spec-val">16A (415V 50Hz)</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-lbl">Insulation (Ui)</span>
+          <span class="spec-val">660 Volts</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-lbl">Manufacturer</span>
+          <span class="spec-val">GN Technologies / Vkon</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-lbl">Base Plate</span>
+          <span class="spec-val">Formed Steel Chassis</span>
+        </div>
+      </div>
+      <button class="energize-btn" id="btnEnergizeContactor">
+        <span class="btn-indicator"></span>
+        <span>Energize Coil (Click/Tap)</span>
+      </button>
+    </div>
+
     <!-- Bottom Interactive Control Dock -->
     <div class="control-dock">
-      <button class="dock-btn active" id="btnFront" title="Front Faceplate View">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8" cy="8" r="1.5"/><circle cx="16" cy="8" r="1.5"/></svg>
-        <span>Front</span>
-      </button>
+      <!-- Panel Dock Buttons -->
+      <div class="panel-dock-group" id="panelDockGroup">
+        <button class="dock-btn active" id="btnFront" title="Front Faceplate View">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8" cy="8" r="1.5"/><circle cx="16" cy="8" r="1.5"/></svg>
+          <span>Front</span>
+        </button>
 
-      <button class="dock-btn" id="btnToggleDoor" title="Open / Close Panel Door">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16"/><path d="M15 12v.01"/></svg>
-        <span id="doorBtnLabel">Open Door</span>
-      </button>
+        <button class="dock-btn" id="btnToggleDoor" title="Open / Close Panel Door">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16"/><path d="M15 12v.01"/></svg>
+          <span id="doorBtnLabel">Open Door</span>
+        </button>
 
-      <button class="dock-btn" id="btnInside" title="Inspect Internal Components">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-        <span>Internals</span>
-      </button>
+        <button class="dock-btn" id="btnInside" title="Inspect Internal Components">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          <span>Internals</span>
+        </button>
 
-      <button class="dock-btn" id="btnBack" title="Rear Wall Mount View">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="7" cy="7" r="1"/><circle cx="17" cy="7" r="1"/><circle cx="12" cy="17" r="1"/></svg>
-        <span>Back</span>
-      </button>
+        <button class="dock-btn" id="btnBack" title="Rear Wall Mount View">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="7" cy="7" r="1"/><circle cx="17" cy="7" r="1"/><circle cx="12" cy="17" r="1"/></svg>
+          <span>Back</span>
+        </button>
+      </div>
 
+      <!-- Contactor Dock Buttons -->
+      <div class="contactor-dock-group" id="contactorDockGroup" style="display: none;">
+        <button class="dock-btn active" id="btnContactorTop" title="Top Face Nameplate">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>
+          <span>Nameplate</span>
+        </button>
+        <button class="dock-btn" id="btnContactorFront" title="Terminal & Coil Front View">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><circle cx="12" cy="12" r="3"/></svg>
+          <span>Terminals</span>
+        </button>
+        <button class="dock-btn" id="btnContactorBase" title="Base Plate & Mounting Slots">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h.01M18 12h.01"/></svg>
+          <span>Base Plate</span>
+        </button>
+        <button class="dock-btn" id="btnContactorIso" title="Isometric 3/4 View">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+          <span>Isometric</span>
+        </button>
+      </div>
+
+      <div class="dock-divider"></div>
+
+      <!-- Auto Rotate Toggle -->
       <button class="dock-btn" id="btnRotate" title="Toggle Auto-Rotation">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 11-.57-8.38l5.67-5.67"/></svg>
         <span>Rotate</span>
       </button>
 
-      <div class="dock-divider"></div>
-
+      <!-- Motor Power Toggle (In Panel Mode) -->
       <button class="dock-btn power-btn" id="btnPowerToggle" title="Click to Toggle Motor Power">
         <span class="power-indicator"></span>
         <span id="powerBtnLabel">Motor ON</span>
@@ -65,7 +142,7 @@
 
     <!-- Quick Tooltip / Interaction Hints -->
     <div class="interaction-hints">
-      <span>🖱️ Drag to Rotate · Scroll to Zoom · Double-Click to Open/Close Door</span>
+      <span id="interactionHintText">🖱️ Drag to Rotate · Scroll to Zoom · Double-Click to Open/Close Door</span>
     </div>
   </div>
 
@@ -73,6 +150,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="app.js"></script>
+  <script src="app.js?v=16"></script>
 </body>
 </html>

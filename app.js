@@ -494,53 +494,185 @@
     ctx.closePath();
   }
 
-  // Contactor Label Texture
-  function createContactorTexture(labelPrefix, hpRating) {
+  // Top Nameplate Texture for Citation Line 16A Contactor (Photo 4)
+  function createCitationLineTopTexture() {
     const c = document.createElement('canvas');
-    c.width = 512;
-    c.height = 256;
+    c.width = 1024;
+    c.height = 420;
     const ctx = c.getContext('2d');
 
-    ctx.fillStyle = '#f8f6f0';
-    ctx.fillRect(0, 0, 512, 256);
+    // Outer red plastic border area
+    ctx.fillStyle = '#cc1e24';
+    ctx.fillRect(0, 0, 1024, 420);
 
-    // Red header bar
-    ctx.fillStyle = '#cc2020';
-    ctx.fillRect(0, 0, 512, 48);
+    // Inner white nameplate sticker
     ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 26px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('CITATION LINE 40AMPS', 256, 34);
-
-    // Brand
-    ctx.fillStyle = '#111111';
-    ctx.font = 'bold 44px sans-serif';
-    ctx.fillText('Vkon', 140, 110);
-    ctx.fillStyle = '#0984e3';
-    ctx.beginPath();
-    ctx.arc(172, 80, 7, 0, Math.PI * 2);
+    roundRect(ctx, 24, 20, 976, 380, 8);
     ctx.fill();
 
-    ctx.fillStyle = '#444';
-    ctx.font = 'bold 16px sans-serif';
-    ctx.fillText('GN TECHNOLOGIES', 140, 136);
-    ctx.fillText('MADE IN INDIA', 140, 160);
+    // Red border line on sticker
+    ctx.strokeStyle = '#cc1e24';
+    ctx.lineWidth = 4;
+    roundRect(ctx, 30, 26, 964, 368, 6);
+    ctx.stroke();
 
-    // Ratings box on right
-    ctx.fillStyle = '#222';
-    ctx.font = '14px monospace';
+    // Left and Right corner silver mounting screw washer cutouts
+    [70, 954].forEach((sx) => {
+      ctx.beginPath();
+      ctx.arc(sx, 210, 36, 0, Math.PI * 2);
+      ctx.fillStyle = '#e8edf3';
+      ctx.fill();
+      ctx.strokeStyle = '#a4b0be';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Screw slot
+      ctx.strokeStyle = '#57606f';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(sx - 18, 210);
+      ctx.lineTo(sx + 18, 210);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(sx, 210 - 18);
+      ctx.lineTo(sx, 210 + 18);
+      ctx.stroke();
+    });
+
+    // ——— LEFT SECTION (Photo 4) ———
+    // "CITATION LINE 16AMPS"
+    ctx.fillStyle = '#11141a';
+    ctx.font = '900 34px "Plus Jakarta Sans", sans-serif';
     ctx.textAlign = 'left';
-    ctx.fillText('Ith: 40A', 280, 85);
-    ctx.fillText('AC1: 40A', 280, 110);
-    ctx.fillText('AC3: 25A', 280, 135);
-    ctx.fillText('Ui: 660V 50Hz', 280, 160);
-    ctx.fillText(hpRating || 'HP: 15 / 20', 280, 185);
+    ctx.fillText('CITATION LINE 16AMPS', 115, 95);
 
-    // Bottom warning
-    ctx.fillStyle = '#cc2020';
-    ctx.font = 'bold 15px sans-serif';
+    // Vkon Logo
+    ctx.fillStyle = '#0f141c';
+    ctx.font = '900 72px "Plus Jakarta Sans", sans-serif';
+    ctx.fillText('Vkon', 125, 230);
+
+    // Cyan swirl arc above 'o'
+    ctx.beginPath();
+    ctx.ellipse(240, 172, 32, 11, -0.2, 0, Math.PI * 2);
+    ctx.strokeStyle = '#0984e3';
+    ctx.lineWidth = 5;
+    ctx.stroke();
+
+    // ——— CENTER SECTION: GN TECHNOLOGIES, Plunger Windows, MADE IN INDIA ———
+    ctx.fillStyle = '#333333';
+    ctx.font = 'bold 22px "Plus Jakarta Sans", sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('415V AC COIL · HEAVY DUTY STARTER', 256, 230);
+    ctx.fillText('GN TECHNOLOGIES', 512, 85);
+    ctx.font = 'bold 20px "Plus Jakarta Sans", sans-serif';
+    ctx.fillText('MADE IN INDIA', 512, 265);
+
+    // Plunger Cutout Windows (matching 3D plunger positions)
+    ctx.fillStyle = '#16181e';
+    roundRect(ctx, 335, 115, 88, 98, 6);
+    ctx.fill();
+    roundRect(ctx, 605, 115, 88, 98, 6);
+    ctx.fill();
+
+    // Center brass threaded insert / eyelet
+    ctx.beginPath();
+    ctx.arc(512, 330, 14, 0, Math.PI * 2);
+    ctx.fillStyle = '#c8a442';
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(512, 330, 8, 0, Math.PI * 2);
+    ctx.fillStyle = '#222';
+    ctx.fill();
+
+    // Ui 660V label
+    ctx.fillStyle = '#11141a';
+    ctx.font = 'bold 22px "JetBrains Mono", monospace';
+    ctx.fillText('Ui 660V', 420, 338);
+
+    // ——— RIGHT SECTION: Circuit Schematic Diagram & Ratings (Photo 4) ———
+    const diagX = 705;
+    const diagY = 40;
+
+    // Schematic Contacts: 1-2, 3-4, 5-6, 7-8 and Coil A1-A2
+    ctx.strokeStyle = '#11141a';
+    ctx.lineWidth = 2.5;
+
+    const contactX = [715, 745, 775, 805];
+    const contactNums = [['1', '2'], ['3', '4'], ['5', '6'], ['7', '8']];
+
+    contactX.forEach((cx, ci) => {
+      // Top lead
+      ctx.beginPath();
+      ctx.moveTo(cx, diagY + 10);
+      ctx.lineTo(cx, diagY + 22);
+      ctx.stroke();
+
+      // Slanted switch arm
+      ctx.beginPath();
+      ctx.moveTo(cx, diagY + 22);
+      ctx.lineTo(cx + 8, diagY + 38);
+      ctx.stroke();
+
+      // Bottom lead
+      ctx.beginPath();
+      ctx.moveTo(cx, diagY + 38);
+      ctx.lineTo(cx, diagY + 50);
+      ctx.stroke();
+
+      // Numbers
+      ctx.fillStyle = '#111';
+      ctx.font = 'bold 14px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(contactNums[ci][0], cx - 8, diagY + 18);
+      ctx.fillText(contactNums[ci][1], cx - 8, diagY + 50);
+    });
+
+    // Coil symbol (A1 - A2)
+    ctx.strokeRect(840, diagY + 15, 36, 24);
+    ctx.beginPath();
+    ctx.moveTo(840, diagY + 15);
+    ctx.lineTo(876, diagY + 39);
+    ctx.stroke();
+
+    ctx.font = 'bold 14px monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('A1', 884, diagY + 20);
+    ctx.fillText('A2', 884, diagY + 40);
+
+    // Ratings Table (Photo 4)
+    const tableX = 710;
+    const tableY = diagY + 80;
+
+    ctx.fillStyle = '#11141a';
+    ctx.font = 'bold 21px "JetBrains Mono", monospace';
+    ctx.fillText('Ith 25A', tableX, tableY);
+    ctx.fillText('AC1, 20A', tableX, tableY + 28);
+    ctx.fillText('AC2, 20A', tableX, tableY + 56);
+    ctx.fillText('AC3, 16A', tableX, tableY + 84);
+    ctx.fillText('AC4, 11A 415V, 50Hz', 530, tableY + 115);
+
+    const tex = new THREE.CanvasTexture(c);
+    tex.encoding = THREE.sRGBEncoding;
+    return tex;
+  }
+
+  // Coil Voltage label texture ("280/440 VOLTS" — Photo 2)
+  function createCoilVoltageTexture() {
+    const c = document.createElement('canvas');
+    c.width = 384;
+    c.height = 96;
+    const ctx = c.getContext('2d');
+
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, 384, 96);
+
+    ctx.strokeStyle = '#999999';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(4, 4, 376, 88);
+
+    ctx.fillStyle = '#0a0d14';
+    ctx.font = 'bold 44px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('280/440 VOLTS', 192, 64);
 
     const tex = new THREE.CanvasTexture(c);
     tex.encoding = THREE.sRGBEncoding;
@@ -842,6 +974,383 @@
   }
 
   // ================================================================
+  //  CITATION LINE 16A CONTACTOR 3D MODEL BUILDER (Photos 1-5)
+  // ================================================================
+  const contactorSteelBaseMat = new THREE.MeshStandardMaterial({
+    color: 0x8a8780, // Industrial painted steel base plate (Photo 1)
+    roughness: 0.58,
+    metalness: 0.32,
+  });
+
+  const contactorBakeliteMat = new THREE.MeshStandardMaterial({
+    color: 0x141416, // Molded glossy black bakelite body (Photos 2, 3, 5)
+    roughness: 0.38,
+    metalness: 0.08,
+  });
+
+  const contactorCapRedMat = new THREE.MeshStandardMaterial({
+    color: 0xbf1b24, // Molded vivid red top cap (Photos 2, 3, 4)
+    roughness: 0.35,
+    metalness: 0.05,
+  });
+
+  const contactorCoilLilacMat = new THREE.MeshStandardMaterial({
+    color: 0xcdbedc, // Lavender / lilac encapsulated coil block (Photo 2)
+    roughness: 0.45,
+    metalness: 0.02,
+  });
+
+  const contactorPlungerWhiteMat = new THREE.MeshStandardMaterial({
+    color: 0xf4f3ee, // White nylon push plunger (Photo 4)
+    roughness: 0.28,
+    metalness: 0.02,
+  });
+
+  const contactorBrassMat = new THREE.MeshStandardMaterial({
+    color: 0xc89e3a, // Terminal brass inserts & screws (Photo 2)
+    roughness: 0.28,
+    metalness: 0.85,
+  });
+
+  let standaloneContactorGroup = null;
+  let standalonePlungers = [];
+  let contactorSparkLight = null;
+
+  function buildCitationLineContactor(options = {}) {
+    const isStandalone = !!options.isStandalone;
+    const s = options.scale || 1.0;
+    const group = new THREE.Group();
+    group.name = 'CitationLineContactor';
+
+    const Hc = 0.084 * s;
+
+    // ——— 1. FORMED STEEL BASE CHASSIS PLATE (Photo 1 & Photo 3) ———
+    const baseGroup = new THREE.Group();
+    const plateW = 0.086 * s;
+    const plateD = 0.096 * s;
+    const plateT = 0.0022 * s;
+
+    // Main flat bottom plate
+    const basePlate = new THREE.Mesh(
+      new THREE.BoxGeometry(plateW, plateT, plateD),
+      contactorSteelBaseMat
+    );
+    basePlate.position.y = -Hc / 2 + plateT / 2;
+    basePlate.receiveShadow = true;
+    basePlate.castShadow = true;
+    baseGroup.add(basePlate);
+
+    // Left folded flange (Photo 1 & Photo 3)
+    const flangeH = 0.016 * s;
+    const flangeL = new THREE.Mesh(
+      new THREE.BoxGeometry(plateT, flangeH, plateD),
+      contactorSteelBaseMat
+    );
+    flangeL.position.set(-plateW / 2 + plateT / 2, -Hc / 2 + flangeH / 2, 0);
+    baseGroup.add(flangeL);
+
+    // Right folded flange with cutout notch (Photo 1)
+    const flangeR = new THREE.Mesh(
+      new THREE.BoxGeometry(plateT, flangeH, plateD * 0.78),
+      contactorSteelBaseMat
+    );
+    flangeR.position.set(plateW / 2 - plateT / 2, -Hc / 2 + flangeH / 2, -plateD * 0.08);
+    baseGroup.add(flangeR);
+
+    // Underside details (Photo 1): Keyhole slot at front, circular hole at rear
+    const keyholeDisc = new THREE.Mesh(
+      new THREE.CircleGeometry(0.0055 * s, 16),
+      new THREE.MeshBasicMaterial({ color: 0x111111, side: THREE.DoubleSide })
+    );
+    keyholeDisc.rotation.x = Math.PI / 2;
+    keyholeDisc.position.set(0.016 * s, -Hc / 2 - 0.0002, 0.032 * s);
+    baseGroup.add(keyholeDisc);
+
+    const keyholeSlot = new THREE.Mesh(
+      new THREE.PlaneGeometry(0.004 * s, 0.010 * s),
+      new THREE.MeshBasicMaterial({ color: 0x111111, side: THREE.DoubleSide })
+    );
+    keyholeSlot.rotation.x = Math.PI / 2;
+    keyholeSlot.position.set(0.016 * s, -Hc / 2 - 0.0002, 0.026 * s);
+    baseGroup.add(keyholeSlot);
+
+    // Rear circular hole
+    const rearHole = new THREE.Mesh(
+      new THREE.CircleGeometry(0.0045 * s, 16),
+      new THREE.MeshBasicMaterial({ color: 0x111111, side: THREE.DoubleSide })
+    );
+    rearHole.rotation.x = Math.PI / 2;
+    rearHole.position.set(-0.018 * s, -Hc / 2 - 0.0002, -0.034 * s);
+    baseGroup.add(rearHole);
+
+    // 4 Philips assembly screws holding chassis to body (Photo 1)
+    const screwPos = [
+      [-0.024 * s, -Hc / 2 - 0.0008, -0.034 * s],
+      [0.028 * s, -Hc / 2 - 0.0008, -0.028 * s],
+      [-0.028 * s, -Hc / 2 - 0.0008, 0.026 * s],
+      [0.006 * s, -Hc / 2 - 0.0008, 0.036 * s],
+    ];
+    screwPos.forEach(([sx, sy, sz]) => {
+      const wsh = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.0055 * s, 0.0055 * s, 0.0008 * s, 16),
+        chromeMat
+      );
+      wsh.position.set(sx, sy, sz);
+      baseGroup.add(wsh);
+
+      const scr = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.004 * s, 0.004 * s, 0.0016 * s, 12),
+        chromeMat
+      );
+      scr.position.set(sx, sy - 0.0008 * s, sz);
+      baseGroup.add(scr);
+
+      const crs = new THREE.Mesh(
+        new THREE.PlaneGeometry(0.005 * s, 0.0012 * s),
+        new THREE.MeshBasicMaterial({ color: 0x222222, side: THREE.DoubleSide })
+      );
+      crs.rotation.x = Math.PI / 2;
+      crs.position.set(sx, sy - 0.0017 * s, sz);
+      baseGroup.add(crs);
+    });
+
+    group.add(baseGroup);
+
+    // ——— 2. MOLDED BLACK BAKELITE BODY & HOUSING (Photos 2, 3, 5) ———
+    const bodyGroup = new THREE.Group();
+
+    // Lower rear main block
+    const lowerBodyRear = new THREE.Mesh(
+      new THREE.BoxGeometry(0.076 * s, 0.046 * s, 0.046 * s),
+      contactorBakeliteMat
+    );
+    lowerBodyRear.position.set(0, -Hc / 2 + plateT + 0.023 * s, -0.018 * s);
+    lowerBodyRear.castShadow = true;
+    lowerBodyRear.receiveShadow = true;
+    bodyGroup.add(lowerBodyRear);
+
+    // Front left & right bakelite pillars flanking the coil block (Photo 2)
+    [-0.0305 * s, 0.0305 * s].forEach((px) => {
+      const pillar = new THREE.Mesh(
+        new THREE.BoxGeometry(0.015 * s, 0.046 * s, 0.036 * s),
+        contactorBakeliteMat
+      );
+      pillar.position.set(px, -Hc / 2 + plateT + 0.023 * s, 0.023 * s);
+      pillar.castShadow = true;
+      bodyGroup.add(pillar);
+    });
+
+    // Upper terminal chamber block (stepped inward slightly per Photo 3)
+    const upperBody = new THREE.Mesh(
+      new THREE.BoxGeometry(0.072 * s, 0.030 * s, 0.076 * s),
+      contactorBakeliteMat
+    );
+    upperBody.position.y = -Hc / 2 + plateT + 0.046 * s + 0.015 * s;
+    upperBody.castShadow = true;
+    bodyGroup.add(upperBody);
+
+    // Side mounting ears (Photo 3)
+    [-1, 1].forEach((dir) => {
+      const ear = new THREE.Mesh(
+        new THREE.BoxGeometry(0.006 * s, 0.016 * s, 0.024 * s),
+        contactorBakeliteMat
+      );
+      ear.position.set(dir * (0.076 * s / 2 + 0.003 * s), -Hc / 2 + 0.018 * s, 0);
+      bodyGroup.add(ear);
+    });
+
+    group.add(bodyGroup);
+
+    // ——— 3. FRONT & REAR TERMINAL BAYS WITH BARRIER FINS (Photo 2 & 5) ———
+    const termX = [-0.027 * s, -0.009 * s, 0.009 * s, 0.027 * s];
+    const finX = [-0.018 * s, 0, 0.018 * s];
+
+    [-1, 1].forEach((faceSide) => {
+      const zOffset = faceSide * (0.076 * s / 2 + 0.005 * s);
+
+      // Terminal deck shelf
+      const deck = new THREE.Mesh(
+        new THREE.BoxGeometry(0.074 * s, 0.014 * s, 0.014 * s),
+        contactorBakeliteMat
+      );
+      deck.position.set(0, 0.006 * s, zOffset);
+      group.add(deck);
+
+      // 3 vertical separator fins protruding outward (Photo 2)
+      finX.forEach((fx) => {
+        const fin = new THREE.Mesh(
+          new THREE.BoxGeometry(0.0024 * s, 0.032 * s, 0.016 * s),
+          contactorBakeliteMat
+        );
+        fin.position.set(fx, 0.012 * s, zOffset + faceSide * 0.002 * s);
+        fin.castShadow = true;
+        group.add(fin);
+      });
+
+      // 4 recessed brass threaded sockets for wire screws
+      termX.forEach((tx) => {
+        const nut = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.0035 * s, 0.0035 * s, 0.006 * s, 16),
+          contactorBrassMat
+        );
+        nut.position.set(tx, 0.013 * s, zOffset);
+        group.add(nut);
+
+        const threadHole = new THREE.Mesh(
+          new THREE.CircleGeometry(0.0018 * s, 12),
+          new THREE.MeshBasicMaterial({ color: 0x161616, side: THREE.DoubleSide })
+        );
+        threadHole.rotation.x = Math.PI / 2;
+        threadHole.position.set(tx, 0.0161 * s, zOffset);
+        group.add(threadHole);
+      });
+    });
+
+    // ——— 4. LOWER COIL CAVITY & "280/440 VOLTS" LILAC COIL BLOCK (Photo 2) ———
+    const coilGroup = new THREE.Group();
+    const coilW = 0.046 * s;
+    const coilH = 0.024 * s;
+    const coilD = 0.036 * s;
+    const coilY = -Hc / 2 + plateT + 0.017 * s;
+    const coilZ = 0.023 * s;
+
+    // Lavender/Lilac encapsulated coil block (Photo 2)
+    const coilMesh = new THREE.Mesh(
+      new THREE.BoxGeometry(coilW, coilH, coilD),
+      contactorCoilLilacMat
+    );
+    coilMesh.position.set(0, coilY, coilZ);
+    coilMesh.castShadow = true;
+    coilGroup.add(coilMesh);
+
+    // Front label: "280/440 VOLTS" sticker (Photo 2)
+    const coilLabelMat = new THREE.MeshStandardMaterial({
+      map: createCoilVoltageTexture(),
+      roughness: 0.5,
+    });
+    const coilLabelMesh = new THREE.Mesh(
+      new THREE.PlaneGeometry(coilW * 0.88, coilH * 0.44),
+      coilLabelMat
+    );
+    coilLabelMesh.position.set(0, coilY + 0.003 * s, coilZ + coilD / 2 + 0.0008 * s);
+    coilGroup.add(coilLabelMesh);
+
+    // 2 Coil terminal screws with square brass clamping washers (Photo 2)
+    [-0.012 * s, 0.012 * s].forEach((cx, ci) => {
+      const clampPlate = new THREE.Mesh(
+        new THREE.BoxGeometry(0.007 * s, 0.007 * s, 0.0018 * s),
+        contactorBrassMat
+      );
+      clampPlate.position.set(cx, coilY - 0.004 * s, coilZ + coilD / 2 + 0.0018 * s);
+      coilGroup.add(clampPlate);
+
+      const screwHead = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.0028 * s, 0.0028 * s, 0.002 * s, 10),
+        contactorBrassMat
+      );
+      screwHead.rotation.x = Math.PI / 2;
+      screwHead.position.set(cx, coilY - 0.004 * s, coilZ + coilD / 2 + 0.0028 * s);
+      coilGroup.add(screwHead);
+
+      // Blue inspection paint mark on the left terminal (Photo 2)
+      if (ci === 0) {
+        const dot = new THREE.Mesh(
+          new THREE.CircleGeometry(0.001 * s, 8),
+          new THREE.MeshBasicMaterial({ color: 0x0984e3, side: THREE.DoubleSide })
+        );
+        dot.position.set(cx - 0.0015 * s, coilY - 0.0055 * s, coilZ + coilD / 2 + 0.0030 * s);
+        coilGroup.add(dot);
+      }
+    });
+
+    group.add(coilGroup);
+
+    // ——— 5. MOLDED RED TOP CAP & NAMEPLATE (Photo 4) ———
+    const topCapGroup = new THREE.Group();
+    const capW = 0.076 * s;
+    const capH = 0.018 * s;
+    const capD = 0.038 * s;
+    const capY = Hc / 2 - capH / 2;
+
+    const redCapMesh = new THREE.Mesh(
+      new THREE.BoxGeometry(capW, capH, capD),
+      contactorCapRedMat
+    );
+    redCapMesh.position.set(0, capY, 0);
+    redCapMesh.castShadow = true;
+    topCapGroup.add(redCapMesh);
+
+    // Front edge cooling notches (Photo 2)
+    for (let rx = -capW / 2 + 0.008 * s; rx <= capW / 2 - 0.008 * s; rx += 0.010 * s) {
+      const ribNotch = new THREE.Mesh(
+        new THREE.BoxGeometry(0.003 * s, 0.008 * s, 0.002 * s),
+        new THREE.MeshBasicMaterial({ color: 0x111111 })
+      );
+      ribNotch.position.set(rx, capY - 0.004 * s, capD / 2 + 0.0005 * s);
+      topCapGroup.add(ribNotch);
+    }
+
+    // Top face Nameplate with exact schematic and ratings from Photo 4
+    const nameplateMat = new THREE.MeshStandardMaterial({
+      map: createCitationLineTopTexture(),
+      roughness: 0.45,
+    });
+    const nameplateMesh = new THREE.Mesh(
+      new THREE.PlaneGeometry(capW - 0.002 * s, capD - 0.002 * s),
+      nameplateMat
+    );
+    nameplateMesh.rotation.x = -Math.PI / 2;
+    nameplateMesh.position.set(0, capY + capH / 2 + 0.0004 * s, 0);
+    topCapGroup.add(nameplateMesh);
+
+    // Two silver pan screws with washers at left & right ends of red cap (Photo 4)
+    [-0.031 * s, 0.031 * s].forEach((sx) => {
+      const wsh = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.0042 * s, 0.0042 * s, 0.0008 * s, 14),
+        chromeMat
+      );
+      wsh.position.set(sx, capY + capH / 2 + 0.0008 * s, 0);
+      topCapGroup.add(wsh);
+
+      const scr = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.003 * s, 0.003 * s, 0.0016 * s, 10),
+        chromeMat
+      );
+      scr.position.set(sx, capY + capH / 2 + 0.0016 * s, 0);
+      topCapGroup.add(scr);
+    });
+
+    group.add(topCapGroup);
+
+    // ——— 6. TWO INTERACTIVE WHITE PUSH PLUNGERS (Photo 4) ———
+    const plunger1 = new THREE.Mesh(
+      new THREE.BoxGeometry(0.008 * s, 0.012 * s, 0.010 * s),
+      contactorPlungerWhiteMat
+    );
+    plunger1.position.set(-0.010 * s, capY + capH / 2 + 0.004 * s, 0);
+    plunger1.castShadow = true;
+    group.add(plunger1);
+
+    const plunger2 = new THREE.Mesh(
+      new THREE.BoxGeometry(0.008 * s, 0.012 * s, 0.010 * s),
+      contactorPlungerWhiteMat
+    );
+    plunger2.position.set(0.010 * s, capY + capH / 2 + 0.004 * s, 0);
+    plunger2.castShadow = true;
+    group.add(plunger2);
+
+    group.userData.plungers = [plunger1, plunger2];
+    group.userData.restY = capY + capH / 2 + 0.004 * s;
+
+    if (isStandalone) {
+      standaloneContactorGroup = group;
+      standalonePlungers = [plunger1, plunger2];
+    }
+
+    return group;
+  }
+
+  // ================================================================
   //  2. INTERNAL COMPONENTS (Contactors, Transformer, Duct, Terminals)
   // ================================================================
   function buildInternals() {
@@ -885,98 +1394,34 @@
 
     intGroup.add(tfGroup);
 
-    // ——— B. 3 CITATION LINE 40A CONTACTORS (Row across Upper Right) ———
-    // Observed in Photo 8: 3 red-trimmed contactors side-by-side
+    // ——— B. 3 CITATION LINE CONTACTORS (Upgraded with Real Photos 1-5 Architecture) ———
     const cPositions = [
-      { x: -0.065, hasAux: false, hp: 'HP: 15 / 20' },
-      { x: 0.035, hasAux: true, hp: 'HP: 20 / 25' },
-      { x: 0.135, hasAux: true, hp: 'HP: 30 / 40' },
+      { x: -0.065, hasAux: false },
+      { x: 0.035, hasAux: true },
+      { x: 0.135, hasAux: true },
     ];
 
-    const cW = 0.075;
-    const cH = 0.085;
-    const cD = 0.06;
     const cY = 0.05;
+    const cD = 0.06;
 
     cPositions.forEach((pos) => {
-      const cGroup = new THREE.Group();
-      cGroup.position.set(pos.x, cY, baseFloorZ + cD / 2);
+      const cContactor = buildCitationLineContactor({ isStandalone: false, scale: 0.85 });
+      cContactor.position.set(pos.x, cY, baseFloorZ + 0.042);
+      // In panel, face towards door (Z positive)
+      intGroup.add(cContactor);
 
-      // Black molded body
-      const body = new THREE.Mesh(
-        new THREE.BoxGeometry(cW, cH, cD),
-        contactorBodyMat
-      );
-      body.castShadow = true;
-      cGroup.add(body);
-
-      // Red outer bezel / frame band
-      const redBand = new THREE.Mesh(
-        new THREE.BoxGeometry(cW + 0.002, cH + 0.002, 0.015),
-        contactorRedMat
-      );
-      redBand.position.z = cD / 2 - 0.008;
-      cGroup.add(redBand);
-
-      // Front white label face
-      const labelMat = new THREE.MeshStandardMaterial({
-        map: createContactorTexture('CITATION LINE', pos.hp),
-        roughness: 0.6,
-      });
-      const labelMesh = new THREE.Mesh(
-        new THREE.PlaneGeometry(cW - 0.006, cH - 0.01),
-        labelMat
-      );
-      labelMesh.position.z = cD / 2 + 0.001;
-      cGroup.add(labelMesh);
-
-      // Terminal screws (3 on top, 3 on bottom)
-      [-1, 1].forEach((row) => {
-        [-0.024, 0, 0.024].forEach((tx) => {
-          const screw = new THREE.Mesh(
-            new THREE.CylinderGeometry(0.0035, 0.0035, 0.005, 8),
-            brassMat
-          );
-          screw.rotation.x = Math.PI / 2;
-          screw.position.set(tx, row * (cH / 2 - 0.008), cD / 2 + 0.003);
-          cGroup.add(screw);
-
-          // Terminal wire lug
-          const lug = new THREE.Mesh(
-            new THREE.BoxGeometry(0.008, 0.008, 0.003),
-            chromeMat
-          );
-          lug.position.set(tx, row * (cH / 2 - 0.008), cD / 2 + 0.001);
-          cGroup.add(lug);
-        });
-      });
-
-      // Transparent Auxiliary Contact Block on top (Contactor 2 and 3)
+      // Transparent Auxiliary Contact Block on top for Contactors 2 and 3
       if (pos.hasAux) {
-        const auxW = 0.042;
-        const auxH = 0.048;
-        const auxD = 0.025;
-
+        const auxW = 0.036;
+        const auxH = 0.040;
+        const auxD = 0.024;
         const auxBlock = new THREE.Mesh(
           new THREE.BoxGeometry(auxW, auxH, auxD),
           acrylicClearMat
         );
-        auxBlock.position.set(0, 0.008, cD / 2 + auxD / 2 + 0.001);
-        cGroup.add(auxBlock);
-
-        // Internal brass contacts visible inside clear block
-        for (let ai = -0.012; ai <= 0.012; ai += 0.024) {
-          const contact = new THREE.Mesh(
-            new THREE.CylinderGeometry(0.003, 0.003, 0.015, 8),
-            brassMat
-          );
-          contact.rotation.x = Math.PI / 2;
-          contact.position.set(ai, 0.008, cD / 2 + auxD / 2);
-          cGroup.add(contact);
-        }
+        auxBlock.position.set(pos.x, cY + 0.042, baseFloorZ + 0.042);
+        intGroup.add(auxBlock);
       }
-
-      intGroup.add(cGroup);
     });
 
     // Inter-contactor heavy busbar wire jumpers (Photo 8)
@@ -1487,6 +1932,48 @@
   const doorGroup = buildHingedDoor();
 
   // ================================================================
+  //  STANDALONE CITATION LINE CONTACTOR SHOWCASE PEDESTAL
+  // ================================================================
+  const contactorShowcaseGroup = new THREE.Group();
+  scene.add(contactorShowcaseGroup);
+  contactorShowcaseGroup.visible = false;
+
+  // Sleek titanium exhibition turntable pedestal
+  const contactorPedestalGeo = new THREE.CylinderGeometry(0.13, 0.15, 0.018, 64);
+  const contactorPedestalMat = new THREE.MeshStandardMaterial({
+    color: 0x181c24,
+    roughness: 0.32,
+    metalness: 0.85,
+  });
+  const contactorPedestal = new THREE.Mesh(contactorPedestalGeo, contactorPedestalMat);
+  contactorPedestal.position.set(0, -0.065, 0);
+  contactorPedestal.receiveShadow = true;
+  contactorShowcaseGroup.add(contactorPedestal);
+
+  // Glowing cyan accent ring around turntable
+  const contactorRingGeo = new THREE.TorusGeometry(0.132, 0.0024, 16, 64);
+  const contactorRingMat = new THREE.MeshBasicMaterial({ color: 0x00d2d3 });
+  const contactorLedRing = new THREE.Mesh(contactorRingGeo, contactorRingMat);
+  contactorLedRing.rotation.x = Math.PI / 2;
+  contactorLedRing.position.set(0, -0.056, 0);
+  contactorShowcaseGroup.add(contactorLedRing);
+
+  // Standalone contactor on top of pedestal (scale: 1.2 for clear inspection)
+  const standaloneContactor = buildCitationLineContactor({ isStandalone: true, scale: 1.2 });
+  standaloneContactor.position.set(0, 0, 0);
+  contactorShowcaseGroup.add(standaloneContactor);
+
+  // Contact spark light effect inside terminal chamber
+  contactorSparkLight = new THREE.PointLight(0x00d2d3, 0, 0.4);
+  contactorSparkLight.position.set(0, 0.03, 0.04);
+  contactorShowcaseGroup.add(contactorSparkLight);
+
+  // Underneath soft uplight for base plate inspection
+  const underLight = new THREE.PointLight(0xffffff, 0.5, 0.3);
+  underLight.position.set(0, -0.04, 0);
+  contactorShowcaseGroup.add(underLight);
+
+  // ================================================================
   //  CAMERA PRESETS & ANIMATIONS (GSAP)
   // ================================================================
 
@@ -1518,7 +2005,6 @@
       ease: 'power2.inOut',
     });
 
-    // Update UI button label
     const label = document.getElementById('doorBtnLabel');
     if (label) label.textContent = open ? 'Close Door' : 'Open Door';
   }
@@ -1555,7 +2041,7 @@
     updateFaceplateCanvas();
   }
 
-  // Periodic subtle voltage / current fluctuation when running for realism
+  // Periodic subtle voltage / current fluctuation when running
   setInterval(() => {
     if (state.isMotorRunning) {
       state.voltage = 414 + Math.floor(Math.random() * 3);
@@ -1565,22 +2051,131 @@
   }, 2200);
 
   // ================================================================
+  //  CONTACTOR ENERGIZE ANIMATION (Plunger pull-in + spark)
+  // ================================================================
+  let isEnergizing = false;
+
+  function energizeContactor() {
+    if (isEnergizing || standalonePlungers.length < 2) return;
+    isEnergizing = true;
+
+    const p1 = standalonePlungers[0];
+    const p2 = standalonePlungers[1];
+    const restY = standaloneContactor.userData.restY;
+    const pulledY = restY - 0.0075;
+
+    const btn = document.getElementById('btnEnergizeContactor');
+    if (btn) btn.classList.add('energized');
+
+    // Mechanical plunger snap-in
+    gsap.to([p1.position, p2.position], {
+      y: pulledY,
+      duration: 0.06,
+      ease: 'power4.in',
+      onComplete: () => {
+        // Flash contact spark
+        if (contactorSparkLight) {
+          contactorSparkLight.intensity = 3.5;
+          gsap.to(contactorSparkLight, { intensity: 0, duration: 0.22 });
+        }
+      },
+    });
+
+    // Hold energized state then release
+    gsap.to([p1.position, p2.position], {
+      y: restY,
+      duration: 0.16,
+      delay: 0.55,
+      ease: 'back.out(2.2)',
+      onComplete: () => {
+        if (btn) btn.classList.remove('energized');
+        isEnergizing = false;
+      },
+    });
+  }
+
+  // ================================================================
+  //  MODE SWITCHER: PANEL vs CONTACTOR
+  // ================================================================
+  const modePanelBtn = document.getElementById('modePanelBtn');
+  const modeContactorBtn = document.getElementById('modeContactorBtn');
+  const contactorSpecCard = document.getElementById('contactorSpecCard');
+  const panelDockGroup = document.getElementById('panelDockGroup');
+  const contactorDockGroup = document.getElementById('contactorDockGroup');
+  const showcaseTitle = document.getElementById('showcaseTitle');
+  const showcaseSubtitle = document.getElementById('showcaseSubtitle');
+  const btnPowerToggle = document.getElementById('btnPowerToggle');
+
+  let currentMode = 'panel';
+
+  function switchMode(mode) {
+    currentMode = mode;
+
+    if (mode === 'panel') {
+      if (modePanelBtn) modePanelBtn.classList.add('active');
+      if (modeContactorBtn) modeContactorBtn.classList.remove('active');
+
+      rootGroup.visible = true;
+      contactorShowcaseGroup.visible = false;
+
+      if (contactorSpecCard) contactorSpecCard.classList.remove('active');
+      if (panelDockGroup) panelDockGroup.style.display = 'flex';
+      if (contactorDockGroup) contactorDockGroup.style.display = 'none';
+      if (btnPowerToggle) btnPowerToggle.style.display = 'flex';
+
+      if (showcaseTitle) showcaseTitle.textContent = 'VKON AUTOMATION';
+      if (showcaseSubtitle) showcaseSubtitle.textContent = 'SASD 1/2/3 Panel · Digital Twin';
+
+      setActiveDockBtn(btnFront);
+      setDoorState(false);
+      animateCameraTo({ x: 0, y: 0.04, z: 0.72 }, { x: 0, y: 0, z: 0 });
+    } else {
+      if (modePanelBtn) modePanelBtn.classList.remove('active');
+      if (modeContactorBtn) modeContactorBtn.classList.add('active');
+
+      rootGroup.visible = false;
+      contactorShowcaseGroup.visible = true;
+
+      if (contactorSpecCard) contactorSpecCard.classList.add('active');
+      if (panelDockGroup) panelDockGroup.style.display = 'none';
+      if (contactorDockGroup) contactorDockGroup.style.display = 'flex';
+      if (btnPowerToggle) btnPowerToggle.style.display = 'none';
+
+      if (showcaseTitle) showcaseTitle.textContent = 'CITATION LINE 16A';
+      if (showcaseSubtitle) showcaseSubtitle.textContent = 'Heavy Duty 4-Pole Contactor · 280/440V Coil';
+
+      setContactorDockActive(btnContactorIso);
+      animateCameraTo({ x: 0.16, y: 0.14, z: 0.22 }, { x: 0, y: 0.01, z: 0 });
+    }
+  }
+
+  if (modePanelBtn) modePanelBtn.addEventListener('click', () => switchMode('panel'));
+  if (modeContactorBtn) modeContactorBtn.addEventListener('click', () => switchMode('contactor'));
+
+  // Wire Energize button in spec card
+  const btnEnergize = document.getElementById('btnEnergizeContactor');
+  if (btnEnergize) {
+    btnEnergize.addEventListener('click', () => {
+      energizeContactor();
+    });
+  }
+
+  // ================================================================
   //  UI INTERACTION EVENT HANDLERS
   // ================================================================
 
+  // Panel Dock Buttons
   const btnFront = document.getElementById('btnFront');
   const btnToggleDoor = document.getElementById('btnToggleDoor');
   const btnInside = document.getElementById('btnInside');
   const btnBack = document.getElementById('btnBack');
   const btnRotate = document.getElementById('btnRotate');
-  const btnPowerToggle = document.getElementById('btnPowerToggle');
 
   function setActiveDockBtn(activeBtn) {
     [btnFront, btnInside, btnBack].forEach((b) => b && b.classList.remove('active'));
     if (activeBtn) activeBtn.classList.add('active');
   }
 
-  // Front View
   if (btnFront) {
     btnFront.addEventListener('click', () => {
       setActiveDockBtn(btnFront);
@@ -1589,7 +2184,6 @@
     });
   }
 
-  // Toggle Door Open / Close
   if (btnToggleDoor) {
     btnToggleDoor.addEventListener('click', () => {
       setDoorState(!state.isDoorOpen);
@@ -1599,22 +2193,67 @@
     });
   }
 
-  // Inside View
   if (btnInside) {
     btnInside.addEventListener('click', () => {
       setActiveDockBtn(btnInside);
       setDoorState(true);
-      // Zoom into internal contactors & terminals
       animateCameraTo({ x: 0.04, y: 0.02, z: 0.46 }, { x: 0.02, y: -0.02, z: -0.02 });
     });
   }
 
-  // Rear Wall Mount View
   if (btnBack) {
     btnBack.addEventListener('click', () => {
       setActiveDockBtn(btnBack);
       setDoorState(false);
       animateCameraTo({ x: 0, y: 0.05, z: -0.76 }, { x: 0, y: 0, z: 0 });
+    });
+  }
+
+  // Contactor Dock Buttons
+  const btnContactorTop = document.getElementById('btnContactorTop');
+  const btnContactorFront = document.getElementById('btnContactorFront');
+  const btnContactorBase = document.getElementById('btnContactorBase');
+  const btnContactorIso = document.getElementById('btnContactorIso');
+
+  function setContactorDockActive(activeBtn) {
+    [btnContactorTop, btnContactorFront, btnContactorBase, btnContactorIso].forEach((b) => b && b.classList.remove('active'));
+    if (activeBtn) activeBtn.classList.add('active');
+  }
+
+  // Top Face (Photo 4: Nameplate & Plungers)
+  if (btnContactorTop) {
+    btnContactorTop.addEventListener('click', () => {
+      setContactorDockActive(btnContactorTop);
+      gsap.to(standaloneContactor.rotation, { x: 0, y: 0, z: 0, duration: 0.8, ease: 'power2.inOut' });
+      animateCameraTo({ x: 0, y: 0.24, z: 0.015 }, { x: 0, y: 0.03, z: 0 });
+    });
+  }
+
+  // Front View (Photo 2: Terminals & 280/440V Coil)
+  if (btnContactorFront) {
+    btnContactorFront.addEventListener('click', () => {
+      setContactorDockActive(btnContactorFront);
+      gsap.to(standaloneContactor.rotation, { x: 0, y: 0, z: 0, duration: 0.8, ease: 'power2.inOut' });
+      animateCameraTo({ x: 0, y: 0.02, z: 0.24 }, { x: 0, y: 0.01, z: 0 });
+    });
+  }
+
+  // Base Plate Underneath (Photo 1: Keyhole slots & Screws)
+  if (btnContactorBase) {
+    btnContactorBase.addEventListener('click', () => {
+      setContactorDockActive(btnContactorBase);
+      // Tilt contactor up to showcase underneath base plate directly to viewer (Photo 1)
+      gsap.to(standaloneContactor.rotation, { x: -Math.PI * 0.52, y: 0, z: 0, duration: 0.9, ease: 'power2.inOut' });
+      animateCameraTo({ x: 0, y: 0.04, z: 0.28 }, { x: 0, y: 0.01, z: 0 });
+    });
+  }
+
+  // Isometric 3/4 View (Photo 3: Stepped Profile)
+  if (btnContactorIso) {
+    btnContactorIso.addEventListener('click', () => {
+      setContactorDockActive(btnContactorIso);
+      gsap.to(standaloneContactor.rotation, { x: 0, y: 0, z: 0, duration: 0.8, ease: 'power2.inOut' });
+      animateCameraTo({ x: 0.16, y: 0.14, z: 0.22 }, { x: 0, y: 0.01, z: 0 });
     });
   }
 
@@ -1633,12 +2272,16 @@
     });
   }
 
-  // Double click canvas to toggle door
+  // Double click canvas to toggle door (in panel mode) or energize (in contactor mode)
   canvas.addEventListener('dblclick', () => {
-    setDoorState(!state.isDoorOpen);
+    if (currentMode === 'panel') {
+      setDoorState(!state.isDoorOpen);
+    } else {
+      energizeContactor();
+    }
   });
 
-  // Raycasting for physical switch clicks
+  // Raycasting for physical switch clicks or contactor click
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
 
@@ -1648,25 +2291,31 @@
     mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
 
     raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(doorGroup.children, true);
 
-    if (intersects.length > 0) {
-      let obj = intersects[0].object;
-      while (obj && obj.parent && !obj.name && obj !== doorGroup) {
-        obj = obj.parent;
-      }
-
-      if (obj && obj.name) {
-        if (obj.name === 'btn_motor_on') {
-          // Push button animation
-          gsap.to(obj.position, { z: obj.position.z - 0.003, duration: 0.1, yoyo: true, repeat: 1 });
-          toggleMotorPower(true);
-        } else if (obj.name === 'btn_motor_off') {
-          gsap.to(obj.position, { z: obj.position.z - 0.003, duration: 0.1, yoyo: true, repeat: 1 });
-          toggleMotorPower(false);
-        } else if (obj.name === 'btn_phase2' || obj.name === 'btn_phase3') {
-          gsap.to(obj.rotation, { x: obj.rotation.x + 0.2, duration: 0.15, yoyo: true, repeat: 1 });
+    if (currentMode === 'panel') {
+      const intersects = raycaster.intersectObjects(doorGroup.children, true);
+      if (intersects.length > 0) {
+        let obj = intersects[0].object;
+        while (obj && obj.parent && !obj.name && obj !== doorGroup) {
+          obj = obj.parent;
         }
+
+        if (obj && obj.name) {
+          if (obj.name === 'btn_motor_on') {
+            gsap.to(obj.position, { z: obj.position.z - 0.003, duration: 0.1, yoyo: true, repeat: 1 });
+            toggleMotorPower(true);
+          } else if (obj.name === 'btn_motor_off') {
+            gsap.to(obj.position, { z: obj.position.z - 0.003, duration: 0.1, yoyo: true, repeat: 1 });
+            toggleMotorPower(false);
+          } else if (obj.name === 'btn_phase2' || obj.name === 'btn_phase3') {
+            gsap.to(obj.rotation, { x: obj.rotation.x + 0.2, duration: 0.15, yoyo: true, repeat: 1 });
+          }
+        }
+      }
+    } else {
+      const intersects = raycaster.intersectObjects(standaloneContactor.children, true);
+      if (intersects.length > 0) {
+        energizeContactor();
       }
     }
   });
