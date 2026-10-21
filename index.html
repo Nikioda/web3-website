@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Protection | Vkon Automation — 3D Interactive Motor Protection Experience</title>
+  <meta name="description" content="Explore what takes an agricultural pump motor out and how the Vkon Smart Control Panel defends against dry run, single phasing, voltage spikes, and overload in real-time 3D.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+  <!-- Top Global Announcement -->
+  <aside class="top-bar">
+    <div class="top-bar-container">
+      <span class="live-pill"><span class="pulse-dot"></span> LIVE 3D TELEMETRY</span>
+      <span class="top-bar-text">Engineered for Indian Agriculture & Rural Grid Realities • Protecting 50,000+ Submersibles</span>
+      <a href="tel:+918217086719" class="top-bar-phone">+91 82170 86719</a>
+    </div>
+  </aside>
+
+  <!-- Navigation Header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand-group">
+        <a href="#hero" class="brand-logo" aria-label="Vkon Automation Home">
+          <svg class="vkon-symbol" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="40" height="40" rx="8" fill="#14181F"/>
+            <path d="M10 12L20 28L30 12" stroke="#00F0FF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M15 12L20 21L25 12" stroke="#FF5E00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="20" cy="20" r="1.5" fill="#00F0FF"/>
+          </svg>
+          <div class="brand-text">
+            <span class="brand-name">VKON</span>
+            <span class="brand-sub">AUTOMATION</span>
+          </div>
+        </a>
+        <div class="grid-status-badge" id="gridStatusBadge">
+          <span class="status-indicator-light" id="statusLed"></span>
+          <span class="status-text" id="statusLabel">3-PHASE GRID NORMAL • 415V</span>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <a href="#simulator" class="nav-link active">3D Protection Lab</a>
+        <a href="#faults-breakdown" class="nav-link">Faults Watched</a>
+        <a href="#automation" class="nav-link">Automation Suite</a>
+        <a href="#mobile-control" class="nav-link">Mobile GSM</a>
+        <a href="#specs" class="nav-link">Panel Finder</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="audio-toggle-btn" id="audioToggleBtn" title="Toggle 3D Audio SFX">
+          <svg class="audio-icon on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          </svg>
+          <svg class="audio-icon off hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <line x1="23" y1="9" x2="17" y2="15"></line>
+            <line x1="17" y1="9" x2="23" y2="15"></line>
+          </svg>
+          <span class="audio-label">AUDIO SFX</span>
+        </button>
+
+        <a href="https://wa.me/918217086719?text=Hello%20Vkon%2C%20I%20am%20interested%20in%20your%20motor%20protection%20panels." target="_blank" rel="noopener noreferrer" class="btn-whatsapp">
+          <svg viewBox="0 0 24 24" fill="currentColor" class="btn-icon">
+            <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.83 2.42a8.19 8.19 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23Z"/>
+          </svg>
+          <span>Chat on WhatsApp</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- 3D HERO INTERACTIVE EXPERIENCE -->
+    <section class="hero-3d-section" id="hero">
+      <div class="hero-intro-header">
+        <div class="hero-badge-tag">ENGINEERED PUMP PRESERVATION SYSTEM</div>
+        <h1 class="hero-title">What Takes A Motor Out.<br><span class="hero-highlight">And How Vkon Stops It.</span></h1>
+        <p class="hero-subtitle">
+          Rural supply is not kind to agricultural pumps. A burnt winding is a rewind, a week without irrigation, and a heavy unexpected bill. 
+          Interact with the live 3D digital twin below to simulate actual line faults and watch the Vkon microcontroller isolate the pump before damage occurs.
+        </p>
+      </div>
+
+      <!-- MAIN 3D SIMULATOR VIEWPORT -->
+      <div class="canvas-wrapper" id="simulator">
+        <canvas id="webgl-canvas"></canvas>
+
+        <!-- 3D Floating Camera Director Bar -->
+        <div class="camera-hud-bar">
+          <span class="hud-label">CAMERA VIEW:</span>
+          <button class="cam-btn active" data-cam="dual">Dual Stage View</button>
+          <button class="cam-btn" data-cam="panel">Smart Starter Panel</button>
+          <button class="cam-btn" data-cam="internal">Contactor & CT X-Ray</button>
+          <button class="cam-btn" data-cam="pump">Borewell Submersible</button>
+          <button class="cam-btn" data-cam="borewell">Aquifer Cutaway</button>
+        </div>
+
+        <!-- 3D View Visual Modes (Normal / X-Ray / Thermal / Flux) -->
+        <div class="render-mode-selector">
+          <button class="mode-pill active" data-mode="realistic">Physical Realism</button>
+          <button class="mode-pill" data-mode="xray">Holo X-Ray</button>
+          <button class="mode-pill" data-mode="thermal">Thermal Heatmap</button>
+        </div>
+
+        <!-- Live Telemetry Digital HUD Overlay -->
+        <div class="telemetry-hud-card" id="telemetryCard">
+          <div class="hud-card-header">
+            <span class="hud-card-title">VKON INTELLISENSE™ TELEMETRY</span>
+            <span class="hud-card-status" id="hudSystemStatus">ONLINE</span>
+          </div>
+
+          <div class="hud-phase-grid">
+            <div class="phase-col">
+              <span class="phase-name r-phase">PHASE R</span>
+              <div class="phase-val-group">
+                <span class="val" id="valVR">415</span><span class="unit">V</span>
+              </div>
+              <div class="phase-val-group sub">
+                <span class="val" id="valAR">14.2</span><span class="unit">A</span>
+              </div>
+            </div>
+            <div class="phase-col">
+              <span class="phase-name y-phase">PHASE Y</span>
+              <div class="phase-val-group">
+                <span class="val" id="valVY">412</span><span class="unit">V</span>
+              </div>
+              <div class="phase-val-group sub">
+                <span class="val" id="valAY">14.1</span><span class="unit">A</span>
+              </div>
+            </div>
+            <div class="phase-col">
+              <span class="phase-name b-phase">PHASE B</span>
+              <div class="phase-val-group">
+                <span class="val" id="valVB">418</span><span class="unit">V</span>
+              </div>
+              <div class="phase-val-group sub">
+                <span class="val" id="valAB">14.3</span><span class="unit">A</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hud-secondary-stats">
+            <div class="stat-item">
+              <span class="label">FREQUENCY</span>
+              <span class="value" id="valFreq">50.0 Hz</span>
+            </div>
+            <div class="stat-item">
+              <span class="label">MOTOR SPEED</span>
+              <span class="value" id="valRpm">2850 RPM</span>
+            </div>
+            <div class="stat-item">
+              <span class="label">WATER HEAD</span>
+              <span class="value" id="valWater">310 LPM</span>
+            </div>
+            <div class="stat-item">
+              <span class="label">TRIP TIME</span>
+              <span class="value" id="valTripSpeed">&lt; 0.6s</span>
+            </div>
+          </div>
+
+          <div class="hud-terminal-log" id="hudLogContainer">
+            <div class="log-entry normal">[00:00:00] System Initialized. 3-Phase Contactor Engaged.</div>
+            <div class="log-entry normal">[00:00:02] Current balanced across all 3 phases. Operating safely.</div>
+          </div>
+        </div>
+
+        <!-- 3D Help & Hint Overlay -->
+        <div class="canvas-controls-hint">
+          <span>🖱️ Click & Drag to Orbit • Scroll to Zoom • Right-Click to Pan</span>
+        </div>
+      </div>
+
+      <!-- FAULT SIMULATION DECK (Interactive Trigger Console) -->
+      <div class="fault-simulator-console">
+        <div class="console-header">
+          <div class="console-title-wrap">
+            <span class="console-tag">INTERACTIVE TEST RIG</span>
+            <h2>Trigger Simulated Rural Grid Faults in 3D</h2>
+            <p>Select any common agricultural failure scenario to watch the 3D model, internal contactors, and digital sensors react instantaneously.</p>
+          </div>
+          <button class="btn-reset-sim" id="btnResetSimulation">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+              <path d="M3 3v5h5"/>
+            </svg>
+            <span>Reset to Healthy State</span>
+          </button>
+        </div>
+
+        <div class="fault-buttons-grid">
+          <!-- Fault 1 -->
+          <button class="fault-card-btn" data-fault="dry-run">
+            <div class="fault-card-top">
+              <span class="fault-icon dry">💧</span>
+              <span class="fault-code">FAULT 01</span>
+            </div>
+            <h3>Dry Run Fault</h3>
+            <p>Aquifer water table drops below intake. Motor cavitates with zero load.</p>
+            <div class="fault-reaction-tag">Cuts motor before winding heats • Auto-restarts</div>
+          </button>
+
+          <!-- Fault 2 -->
+          <button class="fault-card-btn" data-fault="single-phase">
+            <div class="fault-card-top">
+              <span class="fault-icon phase">⚡</span>
+              <span class="fault-code">FAULT 02</span>
+            </div>
+            <h3>Single Phasing</h3>
+            <p>One HT/LT phase cable breaks or drops out. Massive unbalance occurs.</p>
+            <div class="fault-reaction-tag">#1 cause of burnt winding • Trips in &lt; 0.8s</div>
+          </button>
+
+          <!-- Fault 3 -->
+          <button class="fault-card-btn" data-fault="voltage-spike">
+            <div class="fault-card-top">
+              <span class="fault-icon volt">📈</span>
+              <span class="fault-code">FAULT 03</span>
+            </div>
+            <h3>Voltage Surge / Sag</h3>
+            <p>Grid voltage surges to 495V or collapses to 270V brownout.</p>
+            <div class="fault-reaction-tag">Locks motor in safe band (340V - 460V)</div>
+          </button>
+
+          <!-- Fault 4 -->
+          <button class="fault-card-btn" data-fault="phase-reversal">
+            <div class="fault-card-top">
+              <span class="fault-icon reverse">🔄</span>
+              <span class="fault-code">FAULT 04</span>
+            </div>
+            <h3>Phase Reversal</h3>
+            <p>Linemen swap R-Y-B sequence at transformer. Motor attempts backspin.</p>
+            <div class="fault-reaction-tag">Prevents reverse rotation & stripped impellers</div>
+          </button>
+
+          <!-- Fault 5 -->
+          <button class="fault-card-btn" data-fault="overload">
+            <div class="fault-card-top">
+              <span class="fault-icon overload">⚠️</span>
+              <span class="fault-code">FAULT 05</span>
+            </div>
+            <h3>CT-Based Overload</h3>
+            <p>Silt head or pipe choking surges current from 14A to 28A.</p>
+            <div class="fault-reaction-tag">Current transformers monitor true thermal load</div>
+          </button>
+
+          <!-- Fault 6 -->
+          <button class="fault-card-btn" data-fault="rotary-lock">
+            <div class="fault-card-top">
+              <span class="fault-icon lock">🔒</span>
+              <span class="fault-code">FAULT 06</span>
+            </div>
+            <h3>Rotary / Jam Lock</h3>
+            <p>Pebble or sand grain mechanically jams the rotor core in milliseconds.</p>
+            <div class="fault-reaction-tag">Instantly kills locked-rotor current spike</div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- DETAILED FAULTS BREAKDOWN SECTION -->
+    <section class="section-deep-dive" id="faults-breakdown">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="tech-eyebrow">THE REALITY OF RURAL POWER</span>
+          <h2>The 6 Conditions That Murder Agricultural Motors</h2>
+          <p>Standard mechanical switches and basic starters simply watch a crude bi-metallic strip. Here is what actually happens deep underground and how Vkon's digital solid-state core intervenes.</p>
+        </div>
+
+        <div class="fault-comparison-grid">
+          <!-- Card 1 -->
+          <article class="fault-detail-card">
+            <div class="card-status-bar dry"></div>
+            <div class="card-inner">
+              <div class="card-header">
+                <span class="badge-number">01</span>
+                <h3>Dry Run Cavitation</h3>
+              </div>
+              <p class="summary-text">
+                When water level drops below the suction screen, water ceases to cool the submerged motor bearings and winding jacket. Within 90 seconds, thrust bearings fuse and copper insulation crisps.
+              </p>
+              <div class="vkon-response-box">
+                <h4>VKON AUTODETECT™ ACTION:</h4>
+                <p>Digital CT sensors identify sudden drops in active power (power factor collapse under no-load). The panel trips the main contactor in <strong>1.5 seconds</strong> without needing external bore probes, and begins an automated aquifer recharge countdown timer.</p>
+              </div>
+              <ul class="stats-pills">
+                <li>No bore sensors required</li>
+                <li>Adjustable dry-run timer</li>
+                <li>Auto-resume on water return</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="fault-detail-card">
+            <div class="card-status-bar phase"></div>
+            <div class="card-inner">
+              <div class="card-header">
+                <span class="badge-number">02</span>
+                <h3>Single Phasing Disasters</h3>
+              </div>
+              <p class="summary-text">
+                Rural 11kV lines often blow a single jumper on the D.O. fuse, or an LT fuse blows during lightning. The motor continues humming on two phases, drawing up to <strong>2.5× current</strong> on remaining windings.
+              </p>
+              <div class="vkon-response-box">
+                <h4>VKON AUTODETECT™ ACTION:</h4>
+                <p>Continually tracks true RMS phase angle and magnitude across R, Y, and B. If voltage on any phase collapses below threshold, the solid-state logic cuts power in <strong>&lt; 800 milliseconds</strong>, preventing the infamous two-phase winding burnout.</p>
+              </div>
+              <ul class="stats-pills">
+                <li>Sub-second trip time</li>
+                <li>Watches HT & LT drops</li>
+                <li>Digital phase status display</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="fault-detail-card">
+            <div class="card-status-bar volt"></div>
+            <div class="card-inner">
+              <div class="card-header">
+                <span class="badge-number">03</span>
+                <h3>High & Low Voltage Band Excursions</h3>
+              </div>
+              <p class="summary-text">
+                Transformer taps at village boundaries can swing voltage to 500V at midnight (overheating magnetic core) or drag down to 260V at peak pump hours (drawing lethal amperage to sustain torque).
+              </p>
+              <div class="vkon-response-box">
+                <h4>VKON AUTODETECT™ ACTION:</h4>
+                <p>Holds the pump safely isolated whenever input power falls outside the user-calibrated safe band (e.g. 340V – 460V). When line voltage steadies for 5 continuous seconds, the panel safely releases the motor.</p>
+              </div>
+              <ul class="stats-pills">
+                <li>Digital keypad calibration</li>
+                <li>Live 3-phase voltmeter</li>
+                <li>Hysteresis filter prevents chattering</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="fault-detail-card">
+            <div class="card-status-bar reverse"></div>
+            <div class="card-inner">
+              <div class="card-header">
+                <span class="badge-number">04</span>
+                <h3>Phase Sequence Reversal</h3>
+              </div>
+              <p class="summary-text">
+                Whenever electricity board technicians perform line maintenance, re-stringing wires can invert phase rotation (R-B-Y instead of R-Y-B). A 3-phase pump running backwards shears impellers, strips shaft couplings, and draws heavy sand.
+              </p>
+              <div class="vkon-response-box">
+                <h4>VKON AUTODETECT™ ACTION:</h4>
+                <p>Built-in phase rotation comparator verifies phase sequence before engaging the main coils. If rotation is inverted, the display flashes <strong>"ERR: PHASE REVERSE"</strong> and denies start commands.</p>
+              </div>
+              <ul class="stats-pills">
+                <li>Zero backward revolutions</li>
+                <li>Protects impeller keys & shafts</li>
+                <li>No manual checking needed</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- Card 5 -->
+          <article class="fault-detail-card">
+            <div class="card-status-bar overload"></div>
+            <div class="card-inner">
+              <div class="card-header">
+                <span class="badge-number">05</span>
+                <h3>CT-Based True Current Overload</h3>
+              </div>
+              <p class="summary-text">
+                Seasonal water fluctuations or sandy bore water create hydraulic resistance, driving operating current into the thermal creep zone. Conventional thermal bimetallic relays degrade with ambient heat.
+              </p>
+              <div class="vkon-response-box">
+                <h4>VKON AUTODETECT™ ACTION:</h4>
+                <p>Precision Current Transformers (CTs) measure true micro-amperes across all 3 phases. An intelligent inverse-time curve allows brief startup surges but cuts sustained overload cleanly with millisecond accuracy.</p>
+              </div>
+              <ul class="stats-pills">
+                <li>Keypad trip threshold</li>
+                <li>Ambient temperature immune</li>
+                <li>True RMS digital ammeter</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- Card 6 -->
+          <article class="fault-detail-card">
+            <div class="card-status-bar lock"></div>
+            <div class="card-inner">
+              <div class="card-header">
+                <span class="badge-number">06</span>
+                <h3>Rotary Rotor Mechanical Lock</h3>
+              </div>
+              <p class="summary-text">
+                Fine gravel sucked into the pump bowl or scale buildup can wedge the rotating assembly tightly against the diffuser vane. When power arrives, locked-rotor current is <strong>600% of nominal rating</strong>.
+              </p>
+              <div class="vkon-response-box">
+                <h4>VKON AUTODETECT™ ACTION:</h4>
+                <p>Monitors instantaneous inrush slope. If the rotor does not attain counter-EMF rotation within 1.2 seconds, the starter initiates an emergency hardware cutout, saving the submerged copper windings.</p>
+              </div>
+              <ul class="stats-pills">
+                <li>Instantaneous locked-rotor detection</li>
+                <li>Prevents cable insulation melting</li>
+                <li>Protects transformer fuse</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- AUTOMATION SUITE SECTION -->
+    <section class="section-automation" id="automation">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="tech-eyebrow">ZERO HUMAN INTERVENTION REQUIRED</span>
+          <h2>Runs Without You. Because Irrigation Happens at 2 AM.</h2>
+          <p>Power in rural grids often arrives during off-peak night hours. Vkon panels eliminate midnight trips to the fields in the dark.</p>
+        </div>
+
+        <div class="automation-grid">
+          <!-- Item 1 -->
+          <div class="auto-feature-card">
+            <div class="feature-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <h3>Intelligent Auto-Start with Stabilization Delay</h3>
+            <p>
+              When grid power resumes after a blackout, voltage is notorious for wild momentary spikes as thousands of village loads re-connect. Vkon waits for an adjustable stabilization timer (e.g. 60 seconds) before softly engaging the starter.
+            </p>
+            <div class="feature-metric">
+              <span class="metric-num">0 – 300s</span>
+              <span class="metric-desc">Programmable line stabilization delay</span>
+            </div>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="auto-feature-card">
+            <div class="feature-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+              </svg>
+            </div>
+            <h3>Dual Cyclic Timing Automation</h3>
+            <p>
+              For borewells with slow water yield or drip irrigation schedules, program independent ON and OFF timers (e.g. Run 30 minutes, Rest 45 minutes for aquifer replenishment). Runs endlessly unattended through night and day.
+            </p>
+            <div class="feature-metric">
+              <span class="metric-num">24 / 7</span>
+              <span class="metric-desc">Autonomous cyclic irrigation without pump burn</span>
+            </div>
+          </div>
+
+          <!-- Item 3 -->
+          <div class="auto-feature-card">
+            <div class="feature-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+            </div>
+            <h3>Precision Star-Delta Transition</h3>
+            <p>
+              For motors above 7.5 HP, direct-on-line (DOL) starting draws up to 70 Amperes, dropping village transformer voltage and straining cables. Vkon Star-Delta panels handle electronic changeover in milliseconds with zero contact chatter.
+            </p>
+            <div class="feature-metric">
+              <span class="metric-num">-66%</span>
+              <span class="metric-desc">Starting inrush current surge reduction</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MOBILE CONTROL INTERACTIVE GSM DEMO -->
+    <section class="section-gsm" id="mobile-control">
+      <div class="section-container">
+        <div class="gsm-flex-container">
+          <div class="gsm-content-col">
+            <span class="tech-eyebrow">REMOTE FARM MANAGEMENT</span>
+            <h2>Control Your Pump From Any Phone. Anywhere.</h2>
+            <p>
+              No high-speed internet or expensive smartphone required. Switch the motor ON or OFF by simple missed call, SMS, or interactive voice call. 
+              Receive instant SMS alerts the second an electrical fault, single-phase dropout, or dry run occurs.
+            </p>
+
+            <div class="gsm-benefits-list">
+              <div class="benefit-item">
+                <span class="check-icon">✓</span>
+                <div>
+                  <strong>Missed Call Operation:</strong> Give 1 missed call to START, 2 missed calls to STOP. Zero call charges incurred.
+                </div>
+              </div>
+              <div class="benefit-item">
+                <span class="check-icon">✓</span>
+                <div>
+                  <strong>Bi-directional SMS Feedback:</strong> Get instant confirmation: <em>"MOTOR STARTED. R:415V Y:410V B:418V. Current: 14.2A. RUNNING."</em>
+                </div>
+              </div>
+              <div class="benefit-item">
+                <span class="check-icon">✓</span>
+                <div>
+                  <strong>Multi-User Master Key:</strong> Up to 5 family member or worker mobile numbers can be authorized with distinct permissions.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Virtual Phone Prototype -->
+          <div class="gsm-phone-col">
+            <div class="virtual-phone">
+              <div class="phone-speaker"></div>
+              <div class="phone-screen">
+                <div class="phone-header">
+                  <span class="time">12:05 PM</span>
+                  <span class="carrier">4G • VKON GSM</span>
+                  <span class="battery">98% 🔋</span>
+                </div>
+                <div class="chat-contact-bar">
+                  <div class="avatar">⚡</div>
+                  <div class="contact-info">
+                    <span class="name">Borewell Starter 1</span>
+                    <span class="status">Online • 415V</span>
+                  </div>
+                </div>
+
+                <div class="chat-messages" id="phoneChatMessages">
+                  <div class="message incoming">
+                    <div class="msg-bubble">VKON AUTO-ALERT: Grid power restored. Safe band verified (415V). Motor started automatically.</div>
+                    <span class="msg-time">11:42 AM</span>
+                  </div>
+                </div>
+
+                <div class="phone-quick-actions">
+                  <button class="sms-quick-btn" data-cmd="START">Send "START"</button>
+                  <button class="sms-quick-btn" data-cmd="STATUS">Send "STATUS"</button>
+                  <button class="sms-quick-btn danger" data-cmd="STOP">Send "STOP"</button>
+                </div>
+              </div>
+              <div class="phone-home-indicator"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL SELECTION & CALCULATOR -->
+    <section class="section-finder" id="specs">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="tech-eyebrow">ENGINEERING RECOMMENDATION ENGINE</span>
+          <h2>Which Vkon Panel Suits Your Agricultural Borewell?</h2>
+          <p>Different ratings require different starting architectures and protection trip curves. Select your pump configuration below to see the exact recommended panel specifications.</p>
+        </div>
+
+        <div class="finder-interactive-card">
+          <div class="finder-input-row">
+            <div class="input-group">
+              <label for="motorHpSelect">Motor Horsepower (HP):</label>
+              <select id="motorHpSelect" class="styled-select">
+                <option value="3">3 HP (Single / 3-Phase)</option>
+                <option value="5" selected>5 HP (3-Phase Submersible)</option>
+                <option value="7.5">7.5 HP (3-Phase Submersible)</option>
+                <option value="10">10 HP (High Head / Heavy Duty)</option>
+                <option value="15">15 HP (Star-Delta Commercial)</option>
+                <option value="20">20 HP (Industrial & Drip Network)</option>
+              </select>
+            </div>
+
+            <div class="input-group">
+              <label for="powerSourceSelect">Power Architecture:</label>
+              <select id="powerSourceSelect" class="styled-select">
+                <option value="grid" selected>3-Phase Rural Grid Supply</option>
+                <option value="solar">Solar VFD / DC-AC Hybrid</option>
+                <option value="gsm">Grid + GSM Mobile Remote Control</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="finder-result-box" id="panelRecommendationBox">
+            <div class="rec-badge">RECOMMENDED SPECIFICATION</div>
+            <h3 class="rec-model-name" id="recModelName">Vkon Pro-3P 5HP Digital Submersible Starter</h3>
+            <p class="rec-desc" id="recModelDesc">Full digital protection package with 3-phase CT sensing, sub-second single phase cutout, dry run autodetect, and auto-start timer.</p>
+
+            <div class="rec-specs-grid">
+              <div class="spec-block">
+                <span class="spec-label">Starting Type</span>
+                <span class="spec-value" id="recStartType">Direct-On-Line (DOL)</span>
+              </div>
+              <div class="spec-block">
+                <span class="spec-label">Operating Current</span>
+                <span class="spec-value" id="recAmps">7.5A – 11.5A Full Load</span>
+              </div>
+              <div class="spec-block">
+                <span class="spec-label">Protection Included</span>
+                <span class="spec-value" id="recProtection">Dry Run, SPP, UV/OV, Reverse Phase, CT Overload</span>
+              </div>
+              <div class="spec-block">
+                <span class="spec-label">Enclosure</span>
+                <span class="spec-value">IP65 Weatherproof Powder Coated CRCA Steel</span>
+              </div>
+            </div>
+
+            <div class="rec-action-row">
+              <a href="tel:+918217086719" class="btn-call-rec">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                </svg>
+                <span>Call For Price & Local Stock: +91 82170 86719</span>
+              </a>
+              <a href="https://wa.me/918217086719?text=Hello%20Vkon%2C%20please%20send%20me%20a%20quote%20for%20the%20recommended%20panel." target="_blank" rel="noopener noreferrer" class="btn-wa-rec">
+                <span>Request WhatsApp Quotation</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT & DEALER INQUIRIES -->
+    <section class="section-contact">
+      <div class="section-container">
+        <div class="contact-box-grid">
+          <div class="contact-info-col">
+            <span class="tech-eyebrow">VKON AUTOMATION HEADQUARTERS</span>
+            <h2>Talk Directly With Our Power Systems Engineers</h2>
+            <p>Tell us your pump HP, borewell depth in feet, and typical village supply quirks. We will deliver the exact starter with factory pre-configured trip points.</p>
+
+            <div class="contact-channels">
+              <div class="channel-card">
+                <span class="channel-label">TELEPHONE (DIRECT)</span>
+                <a href="tel:+918217086719" class="channel-val">+91 82170 86719</a>
+                <span class="channel-sub">Mon – Sat, 9:30 AM – 6:30 PM IST</span>
+              </div>
+              <div class="channel-card">
+                <span class="channel-label">WHATSAPP SUPPORT</span>
+                <a href="https://wa.me/918217086719?text=Hello%20Vkon%2C%20I%20have%20an%20inquiry%20regarding%20starter%20panels." target="_blank" rel="noopener noreferrer" class="channel-val">+91 82170 86719</a>
+                <span class="channel-sub">Send photos of your existing panel for instant diagnosis</span>
+              </div>
+              <div class="channel-card">
+                <span class="channel-label">OFFICE LOCATION</span>
+                <address class="channel-address">
+                  3rd Floor, Sahyadri Entrepreneurship Park, Adyar, Mangaluru, Karnataka 575007, India
+                </address>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-cta-col">
+            <div class="cta-guarantee-card">
+              <div class="shield-icon">🛡️</div>
+              <h3>100% Winding Burnout Protection Guarantee</h3>
+              <p>When installed according to rating guidelines, Vkon panels prevent 99.8% of typical rural supply rewindings. Used by progressive farmers across Karnataka, Maharashtra, Andhra Pradesh, and Tamil Nadu.</p>
+              
+              <div class="action-btn-stack">
+                <a href="tel:+918217086719" class="btn-primary-glow">Direct Call: +91 82170 86719</a>
+                <a href="https://wa.me/918217086719?text=Hello%20Vkon%2C%20I%20would%20like%20to%20become%20a%20dealer." target="_blank" rel="noopener noreferrer" class="btn-secondary-outline">Dealer & Bulk Distributor Inquiries</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-top-row">
+        <div class="footer-brand">
+          <div class="brand-group">
+            <svg class="vkon-symbol small" viewBox="0 0 40 40" fill="none">
+              <rect width="40" height="40" rx="8" fill="#14181F"/>
+              <path d="M10 12L20 28L30 12" stroke="#00F0FF" stroke-width="3.5" stroke-linecap="round"/>
+              <path d="M15 12L20 21L25 12" stroke="#FF5E00" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+            <span class="footer-brand-name">VKON AUTOMATION</span>
+          </div>
+          <p class="footer-mission">Dedicated protection and smart automation for Indian agriculture and deep borewell submersibles.</p>
+        </div>
+
+        <div class="footer-nav-col">
+          <h4>PROTECTIONS</h4>
+          <ul>
+            <li><a href="#faults-breakdown">Dry Run Sensing</a></li>
+            <li><a href="#faults-breakdown">Single Phasing Cutout</a></li>
+            <li><a href="#faults-breakdown">High / Low Voltage Safe Band</a></li>
+            <li><a href="#faults-breakdown">Reverse Phase Sequence Lock</a></li>
+            <li><a href="#faults-breakdown">CT Current Overload</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-nav-col">
+          <h4>AUTOMATION</h4>
+          <ul>
+            <li><a href="#automation">Auto Start With Timer</a></li>
+            <li><a href="#automation">Cyclic Timer Irrigation</a></li>
+            <li><a href="#automation">Star-Delta Changeover</a></li>
+            <li><a href="#mobile-control">GSM Mobile Remote</a></li>
+            <li><a href="#specs">Solar Hybrid Integration</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-nav-col">
+          <h4>CONNECT</h4>
+          <ul>
+            <li><a href="tel:+918217086719">+91 82170 86719</a></li>
+            <li><a href="https://vkon.in" target="_blank" rel="noopener noreferrer">vkon.in</a></li>
+            <li><a href="https://wa.me/918217086719" target="_blank" rel="noopener noreferrer">WhatsApp Support</a></li>
+            <li><a href="mailto:support@vkon.in">support@vkon.in</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom-row">
+        <p>© 2026 Vkon Automation. Powered by G.N. Technologies. Protection for Indian Agriculture.</p>
+        <div class="legal-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Warranty & Coverage</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating Quick WhatsApp Button -->
+  <a href="https://wa.me/918217086719?text=Hello%20Vkon%2C%20I%20have%20a%20question%20about%20your%20panels." target="_blank" rel="noopener noreferrer" class="floating-wa-bubble" aria-label="WhatsApp Contact">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.83 2.42a8.19 8.19 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23Z"/>
+    </svg>
+  </a>
+
+  <!-- CDN Three.js, OrbitControls & GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+  <!-- Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>
