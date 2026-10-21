@@ -158,8 +158,8 @@
 
   function initFaceplateTexture() {
     faceplateCanvas = document.createElement('canvas');
-    faceplateCanvas.width = 2048;
-    faceplateCanvas.height = 1024;
+    faceplateCanvas.width = 1024;
+    faceplateCanvas.height = 2048;
     faceplateCtx = faceplateCanvas.getContext('2d');
     faceplateTexture = new THREE.CanvasTexture(faceplateCanvas);
     faceplateTexture.encoding = THREE.sRGBEncoding;
@@ -170,268 +170,315 @@
 
   function updateFaceplateCanvas() {
     const ctx = faceplateCtx;
-    const w = 2048;
-    const h = 1024;
+    const w = 1024;
+    const h = 2048;
 
     ctx.clearRect(0, 0, w, h);
 
-    // Outer border & background
+    // Outer metal border & background
     ctx.fillStyle = '#dcd8cf';
     ctx.fillRect(0, 0, w, h);
 
-    // Bezel inset
-    ctx.fillStyle = '#22252a';
-    ctx.fillRect(16, 16, w - 32, h - 32);
+    // Outer dark bezel line
+    ctx.strokeStyle = '#2d323c';
+    ctx.lineWidth = 10;
+    ctx.strokeRect(10, 10, w - 20, h - 20);
 
-    // === LEFT SECTION: Vibrant Yellow Banner (60% width) ===
-    const yellowW = Math.floor(w * 0.58);
-    const gradY = ctx.createLinearGradient(20, 20, yellowW, h - 40);
-    gradY.addColorStop(0, '#f9ba15');
-    gradY.addColorStop(1, '#e59d0b');
-    ctx.fillStyle = gradY;
-    ctx.fillRect(24, 24, yellowW, h - 48);
+    // Inner silver frame line
+    ctx.strokeStyle = '#e8ecf2';
+    ctx.lineWidth = 6;
+    ctx.strokeRect(20, 20, w - 40, h - 40);
 
-    // Red highlight accent bar at top of yellow
-    ctx.fillStyle = '#d63031';
-    ctx.fillRect(24, 24, yellowW, 14);
+    // ================================================================
+    //  SECTION 1: TOP DARK HEADER (LEDs + LCD Meter Display)
+    // ================================================================
+    const topH = 560;
+    ctx.fillStyle = '#161920';
+    ctx.fillRect(28, 28, w - 56, topH);
 
-    // Thin inner border around yellow section
-    ctx.strokeStyle = '#c48208';
+    // Inner dark border
+    ctx.strokeStyle = '#323a48';
     ctx.lineWidth = 4;
-    ctx.strokeRect(32, 44, yellowW - 16, h - 76);
+    ctx.strokeRect(36, 36, w - 72, topH - 16);
 
-    // ——— SWITCH LABELS (Left Column) ———
-    ctx.fillStyle = '#0f141c';
-    ctx.font = 'bold 36px "Plus Jakarta Sans", sans-serif';
-    ctx.textAlign = 'left';
+    // ——— 3 Top Phase LEDs: Red (R), Yellow (Y), Blue (B) ———
+    const ledY = 95;
+    const ledConfigs = [
+      { x: 180, label: 'R', color: state.isMotorRunning ? '#e74c3c' : '#7f1d1d', ring: '#c0392b' },
+      { x: 380, label: 'Y', color: state.isMotorRunning ? '#f1c40f' : '#785b04', ring: '#d4ac0d' },
+      { x: 580, label: 'B', color: state.isMotorRunning ? '#3498db' : '#103e63', ring: '#2980b9' },
+    ];
 
-    // Switch 1: ON / MOTOR
-    ctx.fillText('ON', 180, 185);
-    ctx.fillStyle = '#444';
-    ctx.font = '600 28px "Plus Jakarta Sans", sans-serif';
-    ctx.fillText('MOTOR', 250, 185);
+    ledConfigs.forEach((l) => {
+      // Outer colored label badge ring
+      ctx.beginPath();
+      ctx.arc(l.x, ledY, 44, 0, Math.PI * 2);
+      ctx.fillStyle = l.ring;
+      ctx.fill();
 
-    // Switch 2: OFF / MOTOR
-    ctx.fillStyle = '#0f141c';
-    ctx.font = 'bold 36px "Plus Jakarta Sans", sans-serif';
-    ctx.fillText('OFF', 180, 395);
-    ctx.fillStyle = '#444';
-    ctx.font = '600 28px "Plus Jakarta Sans", sans-serif';
-    ctx.fillText('MOTOR', 265, 395);
+      // Black inner cavity
+      ctx.beginPath();
+      ctx.arc(l.x, ledY, 34, 0, Math.PI * 2);
+      ctx.fillStyle = '#0a0d14';
+      ctx.fill();
 
-    // Switch 3: AUTO / 2PHASE
-    ctx.fillStyle = '#0f141c';
-    ctx.font = 'bold 34px "Plus Jakarta Sans", sans-serif';
-    ctx.fillText('AUTO', 180, 605);
-    ctx.fillStyle = '#1e3799';
-    ctx.font = 'bold 30px "Plus Jakarta Sans", sans-serif';
-    ctx.fillText('2 PHASE', 285, 605);
+      // Glowing LED jewel lens
+      ctx.beginPath();
+      ctx.arc(l.x, ledY, 26, 0, Math.PI * 2);
+      ctx.fillStyle = l.color;
+      ctx.fill();
 
-    // Switch 4: AUTO / 3PHASE
-    ctx.fillStyle = '#0f141c';
-    ctx.font = 'bold 34px "Plus Jakarta Sans", sans-serif';
-    ctx.fillText('AUTO', 180, 815);
-    ctx.fillStyle = '#b71540';
-    ctx.font = 'bold 30px "Plus Jakarta Sans", sans-serif';
-    ctx.fillText('3 PHASE', 285, 815);
+      // Gloss reflection
+      ctx.beginPath();
+      ctx.arc(l.x - 7, ledY - 7, 9, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,255,255,0.6)';
+      ctx.fill();
 
-    // ——— CENTER SECTION: VKON LOGO & MODEL INFO ———
-    const centerX = yellowW - 270;
+      // Letter label (R, Y, B) in white
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 36px "Plus Jakarta Sans", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(l.label, l.x, ledY + 12);
+    });
 
-    // VKON Brand Text
-    ctx.fillStyle = '#111723';
-    ctx.font = '900 88px "Plus Jakarta Sans", sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('Vkon', centerX, 240);
-
-    // Cyan dot on the 'o'
-    ctx.beginPath();
-    ctx.arc(centerX + 62, 178, 14, 0, Math.PI * 2);
-    ctx.fillStyle = '#0984e3';
-    ctx.fill();
-
-    // AUTOMATION subtitle
-    ctx.fillStyle = '#d63031';
-    ctx.font = 'bold 24px "Plus Jakarta Sans", sans-serif';
-    ctx.letterSpacing = '6px';
-    ctx.fillText('AUTOMATION', centerX, 280);
-    ctx.letterSpacing = '0px';
-
-    // Model Red Oval Badge
-    ctx.fillStyle = '#d63031';
-    roundRect(ctx, centerX - 180, 310, 360, 52, 26);
-    ctx.fill();
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 30px "Plus Jakarta Sans", sans-serif';
-    ctx.fillText('MODEL', centerX, 346);
-
-    // Model description text
-    ctx.fillStyle = '#111723';
-    ctx.font = 'bold 28px "Plus Jakarta Sans", sans-serif';
-    ctx.fillText('VKON - SASD 1/2/3', centerX, 410);
-
-    ctx.font = '600 22px "Plus Jakarta Sans", sans-serif';
-    ctx.fillText('Fully Automatic', centerX, 445);
-    ctx.fillText('Digital Control Panel', centerX, 475);
-
-    ctx.fillStyle = '#b71540';
-    ctx.font = 'bold 26px "Plus Jakarta Sans", sans-serif';
-    ctx.fillText('HP 3 TO 40 HP', centerX, 520);
-
-    // Feature bullet list
-    ctx.fillStyle = '#333333';
-    ctx.font = '600 19px "Plus Jakarta Sans", sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('AUTO START · DRY RUN PROTECT.', centerX, 570);
-    ctx.fillText('SINGLE PHASE PREVENTOR', centerX, 600);
-    ctx.fillText('AUTO RESTART OVERLOAD', centerX, 630);
-    ctx.fillText('TIMER / CYCLIC TIMER', centerX, 660);
-    ctx.fillText('GSM CONTROLLER 2G/4G/JIO', centerX, 690);
-
-    // Potentiometer label
-    ctx.fillStyle = '#111';
-    ctx.font = 'bold 24px "Plus Jakarta Sans", sans-serif';
-    ctx.fillText('TIME DELAY (SEC)', centerX, 880);
-
-    // === RIGHT SECTION: Dark Meter / Display Panel ===
-    const darkX = yellowW + 28;
-    const darkW = w - darkX - 24;
-    ctx.fillStyle = '#12161f';
-    ctx.fillRect(darkX, 24, darkW, h - 48);
-
-    // Bevel around dark section
-    ctx.strokeStyle = '#2d3442';
-    ctx.lineWidth = 4;
-    ctx.strokeRect(darkX + 8, 32, darkW - 16, h - 64);
-
-    // Display Header: VOLT & AMPS
-    ctx.fillStyle = '#f5a623';
-    ctx.font = 'bold 34px "Plus Jakarta Sans", sans-serif';
-    ctx.textAlign = 'left';
-    ctx.fillText('VOLT', darkX + 50, 100);
-
-    ctx.textAlign = 'right';
-    ctx.fillText('AMPS', darkX + darkW - 50, 100);
-
-    // LCD Digital Display (Bezel & Window)
-    const lcdX = darkX + 40;
-    const lcdY = 120;
-    const lcdW = darkW - 80;
+    // ——— LCD Digital Voltmeter / Ammeter Display ———
+    const lcdX = 140;
+    const lcdY = 175;
+    const lcdW = w - lcdX - 60;
     const lcdH = 260;
+
+    // Display labels on left side
+    ctx.fillStyle = '#f5a623';
+    ctx.font = 'bold 26px "Plus Jakarta Sans", sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText('AMPS', lcdX - 18, lcdY + 95);
+    ctx.fillText('VOLT', lcdX - 18, lcdY + 185);
 
     // LCD Frame
     ctx.fillStyle = '#0a0d12';
     roundRect(ctx, lcdX, lcdY, lcdW, lcdH, 12);
     ctx.fill();
-    ctx.strokeStyle = '#3a4454';
-    ctx.lineWidth = 3;
+    ctx.strokeStyle = '#485460';
+    ctx.lineWidth = 4;
     ctx.stroke();
 
-    // LCD Screen (Dark Backlit Green)
-    const lcdScreen = ctx.createLinearGradient(lcdX, lcdY, lcdX, lcdY + lcdH);
-    lcdScreen.addColorStop(0, state.isMotorRunning ? '#182b1c' : '#101712');
-    lcdScreen.addColorStop(1, state.isMotorRunning ? '#0e1d11' : '#080d09');
-    ctx.fillStyle = lcdScreen;
-    roundRect(ctx, lcdX + 10, lcdY + 10, lcdW - 20, lcdH - 20, 8);
+    // LCD Screen Glass
+    const lcdGrad = ctx.createLinearGradient(lcdX, lcdY, lcdX, lcdY + lcdH);
+    lcdGrad.addColorStop(0, state.isMotorRunning ? '#162b1b' : '#0d1610');
+    lcdGrad.addColorStop(1, state.isMotorRunning ? '#0e1c12' : '#080d09');
+    ctx.fillStyle = lcdGrad;
+    roundRect(ctx, lcdX + 8, lcdY + 8, lcdW - 16, lcdH - 16, 8);
     ctx.fill();
 
-    // Digital 7-Segment Readout
-    ctx.fillStyle = state.isMotorRunning ? '#39e75f' : '#22552e';
-    ctx.font = 'bold 92px "JetBrains Mono", monospace';
+    // Digital readout text
+    ctx.fillStyle = state.isMotorRunning ? '#39e75f' : '#1e522a';
+    ctx.font = 'bold 88px "JetBrains Mono", monospace';
     ctx.textAlign = 'left';
-    ctx.fillText(state.isMotorRunning ? `${state.voltage}` : '---', lcdX + 40, lcdY + 120);
 
+    // Volts row
+    ctx.fillText(state.isMotorRunning ? `${state.voltage}` : '---', lcdX + 30, lcdY + 110);
     ctx.font = 'bold 32px "Plus Jakarta Sans", sans-serif';
-    ctx.fillStyle = state.isMotorRunning ? '#2ecc71' : '#1e6635';
-    ctx.fillText('V AC', lcdX + 220, lcdY + 115);
+    ctx.fillStyle = state.isMotorRunning ? '#2ecc71' : '#1c4a26';
+    ctx.fillText('V AC', lcdX + 220, lcdY + 105);
 
     // Amps row
-    ctx.font = 'bold 80px "JetBrains Mono", monospace';
-    ctx.fillStyle = state.isMotorRunning ? '#39e75f' : '#22552e';
-    ctx.fillText(state.isMotorRunning ? `${state.current.toFixed(1)}` : '0.0', lcdX + 40, lcdY + 220);
+    ctx.font = 'bold 82px "JetBrains Mono", monospace';
+    ctx.fillStyle = state.isMotorRunning ? '#39e75f' : '#1e522a';
+    ctx.fillText(state.isMotorRunning ? `${state.current.toFixed(1)}` : '0.0', lcdX + 30, lcdY + 215);
+    ctx.font = 'bold 30px "Plus Jakarta Sans", sans-serif';
+    ctx.fillStyle = state.isMotorRunning ? '#2ecc71' : '#1c4a26';
+    ctx.fillText('AMPS', lcdX + 245, lcdY + 210);
 
-    ctx.font = 'bold 32px "Plus Jakarta Sans", sans-serif';
-    ctx.fillStyle = state.isMotorRunning ? '#2ecc71' : '#1e6635';
-    ctx.fillText('AMPS', lcdX + 250, lcdY + 215);
-
-    // Status / Mode indicator on LCD
+    // Status Mode in LCD corner
     ctx.font = 'bold 22px "JetBrains Mono", monospace';
-    ctx.fillStyle = state.isMotorRunning ? '#ffd32a' : '#777';
+    ctx.fillStyle = state.isMotorRunning ? '#ffd32a' : '#555';
     ctx.textAlign = 'right';
-    ctx.fillText(state.isMotorRunning ? 'RUNNING · 3PH' : 'STANDBY', lcdX + lcdW - 30, lcdY + 175);
+    ctx.fillText(state.isMotorRunning ? '3PH RUN' : 'STANDBY', lcdX + lcdW - 25, lcdY + 160);
 
-    // ——— PHASE STATUS LED LABELS (RY, YB, RB, STATUS) ———
-    const phaseY = 440;
+    // Phase Status labels under LCD
+    const underY = lcdY + lcdH + 50;
     ctx.fillStyle = '#8b949e';
+    ctx.font = 'bold 26px "Plus Jakarta Sans", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('RY', 190, underY);
+    ctx.fillText('YB', 380, underY);
+    ctx.fillText('RB', 580, underY);
+    ctx.fillText('STATUS', 790, underY);
+
+    // ================================================================
+    //  SECTION 2: MIDDLE YELLOW FIELD (Knob, Vkon Logo, Model, Bullets)
+    // ================================================================
+    const midY = topH + 28;
+    const midH = 1060;
+
+    // Rich yellow gradient
+    const yGrad = ctx.createLinearGradient(0, midY, 0, midY + midH);
+    yGrad.addColorStop(0, '#f9be18');
+    yGrad.addColorStop(1, '#e59d0b');
+    ctx.fillStyle = yGrad;
+    ctx.fillRect(28, midY, w - 56, midH);
+
+    // Red accent line dividing top dark from yellow
+    ctx.fillStyle = '#d63031';
+    ctx.fillRect(28, midY, w - 56, 10);
+
+    // Thin inner border around yellow area
+    ctx.strokeStyle = '#c48208';
+    ctx.lineWidth = 4;
+    ctx.strokeRect(36, midY + 12, w - 72, midH - 24);
+
+    // Side horizontal decorative red/orange pinstripes (seen in Photo 1 & Image 2)
+    ctx.strokeStyle = '#e67e22';
+    ctx.lineWidth = 3;
+    for (let py = midY + 450; py <= midY + midH - 80; py += 18) {
+      // Left stripes
+      ctx.beginPath();
+      ctx.moveTo(42, py);
+      ctx.lineTo(130, py);
+      ctx.stroke();
+
+      // Right stripes
+      ctx.beginPath();
+      ctx.moveTo(w - 130, py);
+      ctx.lineTo(w - 42, py);
+      ctx.stroke();
+    }
+
+    // ——— Potentiometer Knob Area (Circular Dial Marking) ———
+    const potY = midY + 165;
+    const potX = w / 2;
+
+    // Dial scale ticks around knob
+    ctx.strokeStyle = '#333333';
+    ctx.lineWidth = 3;
+    for (let a = -Math.PI * 0.75; a <= Math.PI * 0.75; a += Math.PI * 0.15) {
+      const cos = Math.cos(a);
+      const sin = Math.sin(a);
+      ctx.beginPath();
+      ctx.moveTo(potX + cos * 80, potY + sin * 80);
+      ctx.lineTo(potX + cos * 94, potY + sin * 94);
+      ctx.stroke();
+    }
+
+    // Dial base shadow circle
+    ctx.beginPath();
+    ctx.arc(potX, potY, 74, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(0,0,0,0.18)';
+    ctx.fill();
+
+    // ——— Brand & Model Row (Below Knob) ———
+    const brandY = midY + 360;
+
+    // Left: Vkon AUTOMATION Logo
+    ctx.fillStyle = '#0f141c';
+    ctx.font = '900 76px "Plus Jakarta Sans", sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('Vkon', 80, brandY);
+
+    // Cyan dot on the 'o'
+    ctx.beginPath();
+    ctx.arc(80 + 120, brandY - 52, 13, 0, Math.PI * 2);
+    ctx.fillStyle = '#00a8ff';
+    ctx.fill();
+
+    // Red AUTOMATION text below Vkon
+    ctx.fillStyle = '#d63031';
+    ctx.font = 'bold 22px "Plus Jakarta Sans", sans-serif';
+    ctx.letterSpacing = '4px';
+    ctx.fillText('AUTOMATION', 80, brandY + 36);
+    ctx.letterSpacing = '0px';
+
+    // Right: Red Oval MODEL Badge
+    const modelBadgeX = w - 240;
+    const modelBadgeY = brandY - 45;
+
+    ctx.fillStyle = '#c0392b';
+    roundRect(ctx, modelBadgeX - 140, modelBadgeY, 280, 56, 28);
+    ctx.fill();
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 30px "Plus Jakarta Sans", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('MODEL', modelBadgeX, modelBadgeY + 39);
+
+    // Model Details Text under badge
+    ctx.fillStyle = '#0f141c';
     ctx.font = 'bold 28px "Plus Jakarta Sans", sans-serif';
     ctx.textAlign = 'center';
+    ctx.fillText('VKON - SASD 1/2/3', modelBadgeX, modelBadgeY + 98);
 
-    const pX1 = darkX + darkW * 0.22;
-    const pX2 = darkX + darkW * 0.44;
-    const pX3 = darkX + darkW * 0.66;
-    const pX4 = darkX + darkW * 0.88;
+    ctx.font = '600 22px "Plus Jakarta Sans", sans-serif';
+    ctx.fillText('• Fully Automatic', modelBadgeX, modelBadgeY + 132);
+    ctx.fillText('Digital Control Panel', modelBadgeX, modelBadgeY + 162);
 
-    ctx.fillText('RY', pX1, phaseY);
-    ctx.fillText('YB', pX2, phaseY);
-    ctx.fillText('RB', pX3, phaseY);
-    ctx.fillText('STAT', pX4, phaseY);
+    ctx.fillStyle = '#b71540';
+    ctx.font = 'bold 25px "Plus Jakarta Sans", sans-serif';
+    ctx.fillText('HP 3 TO 40 HP', modelBadgeX, modelBadgeY + 205);
 
-    // Phase LED rings/bezels drawn on canvas texture
-    const ledY = phaseY + 70;
-    const leds = [
-      { x: pX1, color: state.isMotorRunning ? '#ff3838' : '#6b1818', glow: '#ff3838' },
-      { x: pX2, color: state.isMotorRunning ? '#ffb142' : '#734e19', glow: '#ffb142' },
-      { x: pX3, color: state.isMotorRunning ? '#34ace0' : '#16485e', glow: '#34ace0' },
-      { x: pX4, color: state.isMotorRunning ? '#33d9b2' : '#175949', glow: '#33d9b2' },
+    // ——— Feature Bullet List (Center / Left) ———
+    const listY = midY + 630;
+    ctx.fillStyle = '#1a1f2c';
+    ctx.font = 'bold 26px "Plus Jakarta Sans", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('AUTO START, DRY RUN PROTECT,', w / 2, listY);
+    ctx.fillText('SINGLE PHASE PROTECTOR', w / 2, listY + 44);
+    ctx.fillText('AUTO RE START, OVER LOAD,', w / 2, listY + 88);
+    ctx.fillText('TIMER, FOGGING TIMER', w / 2, listY + 132);
+    ctx.fillText('GSM CONTROLLER 2G, 4G, JIO.', w / 2, listY + 176);
+
+    // ================================================================
+    //  SECTION 3: BOTTOM SWITCH BAR (4 Horizontal Switch Positions)
+    // ================================================================
+    const botY = midY + midH + 16;
+    const botH = h - botY - 28;
+
+    // Dark background for switch row
+    ctx.fillStyle = '#0f141c';
+    ctx.fillRect(28, botY, w - 56, botH);
+
+    // 4 Column cards
+    const colW = (w - 72) / 4;
+    const swCards = [
+      { top: 'MOTOR', bot: 'ON', color: '#00a854', border: '#2980b9' },
+      { top: 'MOTOR', bot: 'OFF', color: '#e74c3c', border: '#2980b9' },
+      { top: '2PHASE', bot: 'AUTO', color: '#0984e3', border: '#2980b9' },
+      { top: '3 PHASE', bot: 'AUTO', color: '#d63031', border: '#2980b9' },
     ];
 
-    leds.forEach((l) => {
-      // Chrome bezel
-      ctx.beginPath();
-      ctx.arc(l.x, ledY, 26, 0, Math.PI * 2);
-      ctx.fillStyle = '#485460';
+    swCards.forEach((c, i) => {
+      const cx = 36 + i * colW;
+      const cy = botY + 8;
+      const cw = colW - 8;
+      const ch = botH - 16;
+
+      // Card background
+      ctx.fillStyle = '#1e2430';
+      roundRect(ctx, cx, cy, cw, ch, 8);
       ctx.fill();
-      ctx.strokeStyle = '#808e9b';
+
+      // Blue border
+      ctx.strokeStyle = c.border;
       ctx.lineWidth = 3;
       ctx.stroke();
 
-      // Colored lens
-      ctx.beginPath();
-      ctx.arc(l.x, ledY, 18, 0, Math.PI * 2);
-      ctx.fillStyle = l.color;
-      ctx.fill();
+      // Top label header banner (blue filled)
+      ctx.fillStyle = '#1e549f';
+      ctx.fillRect(cx + 4, cy + 4, cw - 8, 54);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 24px "Plus Jakarta Sans", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(c.top, cx + cw / 2, cy + 40);
 
-      // Lens gloss highlight
-      ctx.beginPath();
-      ctx.arc(l.x - 5, ledY - 5, 6, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255,255,255,0.6)';
-      ctx.fill();
+      // Bottom label header banner
+      ctx.fillStyle = '#1e549f';
+      ctx.fillRect(cx + 4, cy + ch - 58, cw - 8, 54);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 24px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText(c.bot, cx + cw / 2, cy + ch - 22);
     });
-
-    // Lower Warning / Spec text in dark panel
-    ctx.fillStyle = '#f5a623';
-    ctx.font = 'bold 24px "Plus Jakarta Sans", sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('MICROCONTROLLER BASED', darkX + darkW / 2, 700);
-
-    ctx.fillStyle = '#8b949e';
-    ctx.font = '500 20px "Plus Jakarta Sans", sans-serif';
-    ctx.fillText('415V AC · 50Hz · 3 PHASE', darkX + darkW / 2, 740);
-    ctx.fillText('IP54 ENCLOSURE · CLASS F', darkX + darkW / 2, 775);
-
-    // Barcode / QC pass sticker simulation
-    ctx.fillStyle = '#ffffff';
-    roundRect(ctx, darkX + darkW / 2 - 120, 830, 240, 70, 6);
-    ctx.fill();
-
-    ctx.fillStyle = '#000000';
-    ctx.font = 'bold 18px "JetBrains Mono", monospace';
-    ctx.fillText('VKON QC PASSED', darkX + darkW / 2, 856);
-    ctx.font = '14px "JetBrains Mono", monospace';
-    ctx.fillText('S/N: 2026-VK-8842', darkX + darkW / 2, 882);
 
     if (faceplateTexture) faceplateTexture.needsUpdate = true;
   }
+
 
   function roundRect(ctx, x, y, width, height, radius) {
     ctx.beginPath();
@@ -1097,7 +1144,8 @@
     leftFlange.position.set(-W / 2, 0, 0);
     doorMeshGroup.add(leftFlange);
 
-    // ——— A. MAIN CONTROL FACEPLATE (Upper Half) ———
+
+    // ——— A. MAIN CONTROL FACEPLATE (Vertical Portrait on the Left — Image 2) ———
     // High-resolution canvas texture mapping all graphics, LCD, text, and LED indicators
     const faceplateMat = new THREE.MeshStandardMaterial({
       map: initFaceplateTexture(),
@@ -1105,10 +1153,10 @@
       metalness: 0.05,
     });
 
-    const fpW = 0.28;
-    const fpH = 0.13;
-    const fpX = -0.01;
-    const fpY = 0.06;
+    const fpW = 0.104;  // ~104mm wide
+    const fpH = 0.218;  // ~218mm tall (vertical portrait)
+    const fpX = -0.134; // placed on the left side of the panel door
+    const fpY = 0.008;  // centered vertically
     const fpZ = DOOR_D / 2 + 0.002;
 
     const faceplateMesh = new THREE.Mesh(
@@ -1119,9 +1167,9 @@
     faceplateMesh.receiveShadow = true;
     doorMeshGroup.add(faceplateMesh);
 
-    // Chrome bezel frame surrounding faceplate
-    const frameT = 0.004;
-    const frameD = 0.006;
+    // Chrome outer bezel frame surrounding faceplate
+    const frameT = 0.0035;
+    const frameD = 0.005;
     // Top
     doorMeshGroup.add(makeFrameBar(fpW + frameT * 2, frameT, frameD, fpX, fpY + fpH / 2 + frameT / 2, fpZ + frameD / 2));
     // Bottom
@@ -1131,128 +1179,170 @@
     // Right
     doorMeshGroup.add(makeFrameBar(frameT, fpH, frameD, fpX + fpW / 2 + frameT / 2, fpY, fpZ + frameD / 2));
 
-    // ——— B. PHYSICAL 3D SWITCHES (Left side of faceplate) ———
-    // Aligned to the far left of the yellow section, before the text labels
-    const switchX = fpX - fpW * 0.41;
-    const swW = 0.022;
-    const swH = 0.013;
-    const swD = 0.008;
+    // ——— B. PHYSICAL 3D SWITCHES (Horizontal Row at Bottom of Faceplate — Image 2) ———
+    const swY = fpY - fpH / 2 + 0.021;
+    const swW = 0.015;
+    const swH = 0.021;
+    const swD = 0.007;
+    const colStep = fpW / 4;
 
-    const btnOnMat = new THREE.MeshStandardMaterial({ color: 0x00a854, roughness: 0.25, metalness: 0.1 });
-    const btnOffMat = new THREE.MeshStandardMaterial({ color: 0xd63031, roughness: 0.25, metalness: 0.1 });
-    const btnBlueMat = new THREE.MeshStandardMaterial({ color: 0x0984e3, roughness: 0.25, metalness: 0.1 });
+    const btnOnMat = new THREE.MeshStandardMaterial({ color: 0x009944, roughness: 0.35, metalness: 0.05 });
+    const btnOffMat = new THREE.MeshStandardMaterial({ color: 0xcc1111, roughness: 0.35, metalness: 0.05 });
+    const btnBlueMat = new THREE.MeshStandardMaterial({ color: 0x0066cc, roughness: 0.35, metalness: 0.05 });
 
-    // 1. Green ON Button (Top)
-    const btnOn = createSwitch(swW, swH, swD, btnOnMat, switchX, fpY + 0.044, fpZ);
+    // 1. Green ON Push Button (Left)
+    const btnOn = createSwitch(swW, swH, swD, btnOnMat, fpX - colStep * 1.5, swY, fpZ);
     btnOn.name = 'btn_motor_on';
     doorMeshGroup.add(btnOn);
 
-    // 2. Red OFF Button
-    const btnOff = createSwitch(swW, swH, swD, btnOffMat, switchX, fpY + 0.016, fpZ);
+    // 2. Red OFF Push Button
+    const btnOff = createSwitch(swW, swH, swD, btnOffMat, fpX - colStep * 0.5, swY, fpZ);
     btnOff.name = 'btn_motor_off';
     doorMeshGroup.add(btnOff);
 
-    // 3. Blue AUTO / 2-PHASE Rocker
-    const btnPhase2 = createSwitch(swW, swH, swD, btnBlueMat, switchX, fpY - 0.014, fpZ);
+    // 3. Blue AUTO / 2-PHASE Switch
+    const btnPhase2 = createSwitch(swW, swH, swD, btnBlueMat, fpX + colStep * 0.5, swY, fpZ);
     btnPhase2.name = 'btn_phase2';
     doorMeshGroup.add(btnPhase2);
 
-    // 4. Red AUTO / 3-PHASE Rocker (Bottom)
-    const btnPhase3 = createSwitch(swW, swH, swD, btnOffMat, switchX, fpY - 0.042, fpZ);
+    // 4. Red AUTO / 3-PHASE Rocker Switch (Right, with O / I marking)
+    const btnPhase3 = createSwitch(swW, swH, swD, btnOffMat, fpX + colStep * 1.5, swY, fpZ);
     btnPhase3.name = 'btn_phase3';
+    // Rocker circle/line graphic
+    const rockerO = new THREE.Mesh(
+      new THREE.RingGeometry(0.0018, 0.0026, 12),
+      new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide })
+    );
+    rockerO.position.set(0, 0.004, swD / 2 + 0.0025);
+    btnPhase3.add(rockerO);
+
+    const rockerI = new THREE.Mesh(
+      new THREE.PlaneGeometry(0.0012, 0.0045),
+      new THREE.MeshBasicMaterial({ color: 0xffffff })
+    );
+    rockerI.position.set(0, -0.004, swD / 2 + 0.0025);
+    btnPhase3.add(rockerI);
+
     doorMeshGroup.add(btnPhase3);
 
-    // ——— C. CENTER BLACK POTENTIOMETER KNOB ———
-    // Located in the lower center of the yellow banner (Photo 1)
-    const knobX = fpX - 0.015;
-    const knobY = fpY - 0.040;
-    const knobGeo = new THREE.CylinderGeometry(0.011, 0.013, 0.010, 24);
+    // ——— C. CENTER BLACK POTENTIOMETER KNOB (Above Vkon Logo in Yellow Area) ———
+    const knobX = fpX;
+    const knobY = fpY + 0.016;
+    const knobGeo = new THREE.CylinderGeometry(0.010, 0.012, 0.009, 24);
     potKnobMesh = new THREE.Mesh(knobGeo, darkRubberMat);
     potKnobMesh.rotation.x = Math.PI / 2;
     potKnobMesh.position.set(knobX, knobY, fpZ + 0.005);
     potKnobMesh.castShadow = true;
 
-    // Cross / notch on knob
-    const notch1 = new THREE.Mesh(
-      new THREE.BoxGeometry(0.002, 0.010, 0.011),
-      new THREE.MeshBasicMaterial({ color: 0xffffff })
-    );
-    notch1.position.set(0, 0, 0);
-    potKnobMesh.add(notch1);
-
-    const notch2 = new THREE.Mesh(
-      new THREE.BoxGeometry(0.010, 0.002, 0.011),
-      new THREE.MeshBasicMaterial({ color: 0xffffff })
-    );
-    notch2.position.set(0, 0, 0);
-    potKnobMesh.add(notch2);
+    // Recessed cross (+) screwdriver slot on knob
+    const slotMat = new THREE.MeshBasicMaterial({ color: 0x111111 });
+    const slotH = new THREE.Mesh(new THREE.BoxGeometry(0.0018, 0.008, 0.010), slotMat);
+    const slotV = new THREE.Mesh(new THREE.BoxGeometry(0.008, 0.0018, 0.010), slotMat);
+    potKnobMesh.add(slotH);
+    potKnobMesh.add(slotV);
 
     doorMeshGroup.add(potKnobMesh);
 
-    // ——— D. SQUARE AMMETER CUTOUT WITH 4 TABS (Photo 1 & 7) ———
-    // Directly below the faceplate: 60mm square cutout with 4 distinct mounting tabs
+    // ——— D. SQUARE AMMETER KNOCKOUT WITH 4 TABS (In Center of Door — Image 2) ———
+    // In Image 2, this is a stamped sheet metal knockout plate surrounded by a slit groove and held by 4 tabs
     const ammeterGroup = new THREE.Group();
-    const ammeterX = -0.055;
-    const ammeterY = -0.055;
+    const ammeterX = -0.012;
+    const ammeterY = -0.040;
     ammeterGroup.position.set(ammeterX, ammeterY, fpZ);
 
-    const cutW = 0.056;
-    const cutH = 0.056;
+    const cutW = 0.064;
+    const cutH = 0.064;
+    const slitT = 0.0018;
 
-    // Cutout frame outline (sheet metal edge)
-    const cutEdgeMat = new THREE.MeshBasicMaterial({ color: 0x1a1e24 });
-    const cutoutHole = new THREE.Mesh(
-      new THREE.PlaneGeometry(cutW, cutH),
-      cutEdgeMat
-    );
-    ammeterGroup.add(cutoutHole);
+    // Slit groove segments (Top, Bottom, Left segments, Right segments with tab gaps)
+    const slitMat = new THREE.MeshBasicMaterial({ color: 0x111317 });
 
-    // 4 Corner mounting notch tabs
-    [[-1, 0], [1, 0], [0, -1], [0, 1]].forEach(([tx, ty]) => {
-      const tabW = tx !== 0 ? 0.008 : 0.018;
-      const tabH = ty !== 0 ? 0.008 : 0.018;
-      const tab = new THREE.Mesh(
-        new THREE.PlaneGeometry(tabW, tabH),
-        cutEdgeMat
-      );
-      tab.position.set(tx * (cutW / 2 + tabW / 2), ty * (cutH / 2 + tabH / 2), 0.0005);
-      ammeterGroup.add(tab);
+    // Top slit
+    const slitTop = new THREE.Mesh(new THREE.PlaneGeometry(cutW, slitT), slitMat);
+    slitTop.position.set(0, cutH / 2, 0.0006);
+    ammeterGroup.add(slitTop);
+
+    // Bottom slit
+    const slitBot = new THREE.Mesh(new THREE.PlaneGeometry(cutW, slitT), slitMat);
+    slitBot.position.set(0, -cutH / 2, 0.0006);
+    ammeterGroup.add(slitBot);
+
+    // Left and Right edge slits (with 2 tabs on each side as seen in Image 2)
+    [-1, 1].forEach((side) => {
+      // Top segment
+      const s1 = new THREE.Mesh(new THREE.PlaneGeometry(slitT, cutH * 0.28), slitMat);
+      s1.position.set(side * cutH / 2, cutH * 0.35, 0.0006);
+      ammeterGroup.add(s1);
+
+      // Middle segment between the two tabs
+      const s2 = new THREE.Mesh(new THREE.PlaneGeometry(slitT, cutH * 0.28), slitMat);
+      s2.position.set(side * cutH / 2, 0, 0.0006);
+      ammeterGroup.add(s2);
+
+      // Bottom segment
+      const s3 = new THREE.Mesh(new THREE.PlaneGeometry(slitT, cutH * 0.28), slitMat);
+      s3.position.set(side * cutH / 2, -cutH * 0.35, 0.0006);
+      ammeterGroup.add(s3);
+
+      // The 4 stamped tab notch marks extending slightly outward (Image 2)
+      [-0.020, 0.020].forEach((ty) => {
+        const tabNotch = new THREE.Mesh(new THREE.PlaneGeometry(0.004, 0.005), slitMat);
+        tabNotch.position.set(side * (cutH / 2 + 0.002), ty, 0.0006);
+        ammeterGroup.add(tabNotch);
+      });
     });
 
     doorMeshGroup.add(ammeterGroup);
 
-    // ——— E. EMBOSSED LOWER-LEFT RECTANGLE (Photo 1) ———
-    const embossW = 0.095;
-    const embossH = 0.075;
+    // ——— E. EMBOSSED SQUARE RECESS (On the Right Side of Door — Image 2) ———
+    // In Image 2, there is an embossed stamped square plate on the right side
+    const embossW = 0.076;
+    const embossH = 0.076;
     const embossGroup = new THREE.Group();
-    embossGroup.position.set(-0.11, -0.08, fpZ - 0.001);
+    const embossX = 0.128;
+    const embossY = -0.040;
+    embossGroup.position.set(embossX, embossY, fpZ - 0.0005);
 
+    // Recessed plate (slightly darker shadow tone)
     const embossMesh = new THREE.Mesh(
       new THREE.PlaneGeometry(embossW, embossH),
       new THREE.MeshStandardMaterial({
-        color: 0xd8d4cc,
-        roughness: 0.45,
-        metalness: 0.05,
+        color: 0xc4c0b6,
+        roughness: 0.52,
+        metalness: 0.06,
       })
     );
     embossGroup.add(embossMesh);
 
-    // Emboss ridge line
-    const ridgeLine = new THREE.LineSegments(
-      new THREE.EdgesGeometry(new THREE.PlaneGeometry(embossW, embossH)),
-      new THREE.LineBasicMaterial({ color: 0xb5b0a6, linewidth: 2 })
-    );
-    ridgeLine.position.z = 0.001;
-    embossGroup.add(ridgeLine);
+    // Top & Left shadow edges (embossed inward)
+    const shadowMat = new THREE.MeshBasicMaterial({ color: 0x99948a });
+    const highlightMat = new THREE.MeshBasicMaterial({ color: 0xeeeae2 });
+
+    const topShadow = new THREE.Mesh(new THREE.PlaneGeometry(embossW, 0.0016), shadowMat);
+    topShadow.position.set(0, embossH / 2, 0.001);
+    embossGroup.add(topShadow);
+
+    const leftShadow = new THREE.Mesh(new THREE.PlaneGeometry(0.0016, embossH), shadowMat);
+    leftShadow.position.set(-embossW / 2, 0, 0.001);
+    embossGroup.add(leftShadow);
+
+    // Bottom & Right highlight edges
+    const botHighlight = new THREE.Mesh(new THREE.PlaneGeometry(embossW, 0.0016), highlightMat);
+    botHighlight.position.set(0, -embossH / 2, 0.001);
+    embossGroup.add(botHighlight);
+
+    const rightHighlight = new THREE.Mesh(new THREE.PlaneGeometry(0.0016, embossH), highlightMat);
+    rightHighlight.position.set(embossW / 2, 0, 0.001);
+    embossGroup.add(rightHighlight);
 
     doorMeshGroup.add(embossGroup);
 
     // ——— F. INSIDE OF DOOR: CONTROLLER PCB ENCLOSURE BOX (Photo 7) ———
-    // Beige plastic rectangular box mounted directly on inner face of door
+    // Beige plastic rectangular box mounted directly on inner face of door behind faceplate
     const pcbGroup = new THREE.Group();
-    const pcbW = 0.22;
-    const pcbH = 0.095;
-    const pcbD = 0.032;
+    const pcbW = 0.102;
+    const pcbH = 0.208;
+    const pcbD = 0.030;
     pcbGroup.position.set(fpX, fpY, -DOOR_D / 2 + pcbD / 2 + 0.002);
 
     const pcbBody = new THREE.Mesh(
@@ -1261,13 +1351,13 @@
     );
     pcbGroup.add(pcbBody);
 
-    // Top ventilation cooling ribs
-    for (let rx = -pcbW / 2 + 0.02; rx <= pcbW / 2 - 0.02; rx += 0.008) {
+    // Ventilation cooling ribs
+    for (let ry = -pcbH / 2 + 0.02; ry <= pcbH / 2 - 0.02; ry += 0.012) {
       const rib = new THREE.Mesh(
-        new THREE.BoxGeometry(0.003, 0.002, pcbD - 0.006),
+        new THREE.BoxGeometry(pcbW - 0.016, 0.003, 0.002),
         new THREE.MeshBasicMaterial({ color: 0x444038 })
       );
-      rib.position.set(rx, pcbH / 2, 0);
+      rib.position.set(0, ry, -pcbD / 2 - 0.001);
       pcbGroup.add(rib);
     }
 
