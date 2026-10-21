@@ -595,386 +595,583 @@
     ctx.closePath();
   }
 
-  // Top Nameplate Texture for Citation Line 16A Contactor (Photo 4)
-  function createCitationLineTopTexture() {
+  // ================================================================
+  //  CITATION LINE CONTACTOR NAMEPLATE TEXTURES (Photos 4 & 8)
+  // ================================================================
+
+  // Master Canvas Generator for Citation Line Contactor Red Cap Nameplate
+  // Faithfully drawn from user reference photographs (media_1792571138602.png & contactor1_crop.png)
+  function renderCitationLineNameplateCanvas(is40A) {
+    const W = 1280;
+    const H = 512;
     const c = document.createElement('canvas');
-    c.width = 1024;
-    c.height = 420;
+    c.width = W;
+    c.height = H;
     const ctx = c.getContext('2d');
 
-    // Outer red plastic border area
-    ctx.fillStyle = '#cc1e24';
-    ctx.fillRect(0, 0, 1024, 420);
+    // 1. Deep glossy industrial red background (Photo 4)
+    ctx.fillStyle = '#cc1c24';
+    ctx.fillRect(0, 0, W, H);
 
-    // Inner white nameplate sticker
-    ctx.fillStyle = '#ffffff';
-    roundRect(ctx, 24, 20, 976, 380, 8);
-    ctx.fill();
-
-    // Red border line on sticker
-    ctx.strokeStyle = '#cc1e24';
+    // Beveled molded plastic rim
+    ctx.strokeStyle = '#e63946';
     ctx.lineWidth = 4;
-    roundRect(ctx, 30, 26, 964, 368, 6);
+    roundRect(ctx, 4, 4, W - 8, H - 8, 12);
     ctx.stroke();
 
-    // Left and Right corner silver mounting screw washer cutouts
-    [70, 954].forEach((sx) => {
+    // 2. White Vinyl Nameplate Sticker (Photos 4 & 8)
+    const stickerX = 94;
+    const stickerY = 16;
+    const stickerW = W - 188;
+    const stickerH = H - 32;
+
+    ctx.fillStyle = '#ffffff';
+    roundRect(ctx, stickerX, stickerY, stickerW, stickerH, 8);
+    ctx.fill();
+
+    // 3. Mounting Screw Pockets (Left & Right Ends in horizontal layout)
+    const sx1 = 52;
+    const sx2 = W - 52;
+    const sy = H / 2;
+
+    [sx1, sx2].forEach((sx) => {
+      // Recessed red pocket
       ctx.beginPath();
-      ctx.arc(sx, 210, 36, 0, Math.PI * 2);
-      ctx.fillStyle = '#e8edf3';
+      ctx.arc(sx, sy, 38, 0, Math.PI * 2);
+      ctx.fillStyle = '#a01018';
       ctx.fill();
-      ctx.strokeStyle = '#a4b0be';
-      ctx.lineWidth = 3;
+
+      // Outer silver washer
+      ctx.beginPath();
+      ctx.arc(sx, sy, 32, 0, Math.PI * 2);
+      ctx.fillStyle = '#e2e7ec';
+      ctx.fill();
+      ctx.strokeStyle = '#9aa3ad';
+      ctx.lineWidth = 2.5;
       ctx.stroke();
 
-      // Screw slot
-      ctx.strokeStyle = '#57606f';
-      ctx.lineWidth = 4;
+      // Pan head screw
+      const grad = ctx.createRadialGradient(sx - 4, sy - 4, 2, sx, sy, 22);
+      grad.addColorStop(0, '#f5f7fa');
+      grad.addColorStop(0.7, '#cfd6de');
+      grad.addColorStop(1, '#9aa3ad');
       ctx.beginPath();
-      ctx.moveTo(sx - 18, 210);
-      ctx.lineTo(sx + 18, 210);
+      ctx.arc(sx, sy, 22, 0, Math.PI * 2);
+      ctx.fillStyle = grad;
+      ctx.fill();
+      ctx.strokeStyle = '#7b8590';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Philips cross slot
+      ctx.strokeStyle = '#3a4048';
+      ctx.lineWidth = 3.5;
+      ctx.beginPath();
+      ctx.moveTo(sx - 14, sy);
+      ctx.lineTo(sx + 14, sy);
       ctx.stroke();
       ctx.beginPath();
-      ctx.moveTo(sx, 210 - 18);
-      ctx.lineTo(sx, 210 + 18);
+      ctx.moveTo(sx, sy - 14);
+      ctx.lineTo(sx, sy + 14);
       ctx.stroke();
     });
 
-    // ——— LEFT SECTION (Photo 4) ———
-    // "CITATION LINE 40AMPS"
-    ctx.fillStyle = '#11141a';
-    ctx.font = '900 34px "Plus Jakarta Sans", sans-serif';
-    ctx.textAlign = 'left';
-    ctx.fillText('CITATION LINE 40AMPS', 115, 95);
-
-    // Vkon Logo
-    ctx.fillStyle = '#0f141c';
-    ctx.font = '900 72px "Plus Jakarta Sans", sans-serif';
-    ctx.fillText('Vkon', 125, 230);
-
-    // Cyan swirl arc above 'o'
-    ctx.beginPath();
-    ctx.ellipse(240, 172, 32, 11, -0.2, 0, Math.PI * 2);
-    ctx.strokeStyle = '#0984e3';
-    ctx.lineWidth = 5;
-    ctx.stroke();
-
-    // ——— CENTER SECTION: GN TECHNOLOGIES, Plunger Windows, MADE IN INDIA ———
-    ctx.fillStyle = '#333333';
-    ctx.font = 'bold 22px "Plus Jakarta Sans", sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('GN TECHNOLOGIES', 512, 85);
-    ctx.font = 'bold 20px "Plus Jakarta Sans", sans-serif';
-    ctx.fillText('MADE IN INDIA', 512, 265);
-
-    // Plunger Cutout Windows (matching 3D plunger positions)
-    ctx.fillStyle = '#16181e';
-    roundRect(ctx, 335, 115, 88, 98, 6);
-    ctx.fill();
-    roundRect(ctx, 605, 115, 88, 98, 6);
-    ctx.fill();
-
-    // Center brass threaded insert / eyelet
-    ctx.beginPath();
-    ctx.arc(512, 330, 14, 0, Math.PI * 2);
-    ctx.fillStyle = '#c8a442';
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(512, 330, 8, 0, Math.PI * 2);
-    ctx.fillStyle = '#222';
-    ctx.fill();
-
-    // Ui 660V label
-    ctx.fillStyle = '#11141a';
-    ctx.font = 'bold 22px "JetBrains Mono", monospace';
-    ctx.fillText('Ui 660V', 420, 338);
-
-    // ——— RIGHT SECTION: Circuit Schematic Diagram & Ratings (Photo 4) ———
-    const diagX = 705;
-    const diagY = 40;
-
-    // Schematic Contacts: 1-2, 3-4, 5-6, 7-8 and Coil A1-A2
-    ctx.strokeStyle = '#11141a';
-    ctx.lineWidth = 2.5;
-
-    const contactX = [715, 745, 775, 805];
-    const contactNums = [['1', '2'], ['3', '4'], ['5', '6'], ['7', '8']];
-
-    contactX.forEach((cx, ci) => {
-      // Top lead
+    // 4. Waist Brass Threaded Inserts (Top & Bottom center notches in horizontal layout)
+    const tx = W / 2;
+    [20, H - 20].forEach((ty) => {
+      // Recessed semi-circle in sticker
       ctx.beginPath();
-      ctx.moveTo(cx, diagY + 10);
-      ctx.lineTo(cx, diagY + 22);
+      ctx.arc(tx, ty, 28, 0, Math.PI * 2);
+      ctx.fillStyle = '#cc1c24';
+      ctx.fill();
+
+      // Brass threaded ring
+      ctx.beginPath();
+      ctx.arc(tx, ty, 18, 0, Math.PI * 2);
+      ctx.fillStyle = '#c8a442';
+      ctx.fill();
+      ctx.strokeStyle = '#997520';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Threaded center hole
+      ctx.beginPath();
+      ctx.arc(tx, ty, 9, 0, Math.PI * 2);
+      ctx.fillStyle = '#181818';
+      ctx.fill();
+    });
+
+    // 5. Two Center Plunger Windows (Photos 4 & 8)
+    // Perfectly centered around W / 2 (640)
+    const winW = 100;
+    const winH = 160;
+    const winY = 175;
+    const winX1 = 500;
+    const winX2 = 680;
+
+    [winX1, winX2].forEach((wx) => {
+      // Dark red/black recess frame
+      ctx.fillStyle = '#180406';
+      roundRect(ctx, wx, winY, winW, winH, 6);
+      ctx.fill();
+      ctx.strokeStyle = '#8c1018';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Protruding cream/white moving core tab
+      const tabGrad = ctx.createLinearGradient(wx, winY, wx + winW, winY + winH);
+      tabGrad.addColorStop(0, '#faf8f2');
+      tabGrad.addColorStop(0.5, '#eae5d8');
+      tabGrad.addColorStop(1, '#d5cfbe');
+      ctx.fillStyle = tabGrad;
+      roundRect(ctx, wx + 8, winY + 8, winW - 16, winH - 16, 4);
+      ctx.fill();
+
+      // Molded bevel lines on core tab
+      ctx.strokeStyle = '#bab4a2';
+      ctx.lineWidth = 1.5;
+      roundRect(ctx, wx + 14, winY + 14, winW - 28, winH - 28, 2);
+      ctx.stroke();
+    });
+
+    // 6. LEFT SECTION: Model Title & Vkon Logo (Photo 4)
+    // "CITATION LINE 40AMPS" (or 16AMPS) - clean bold condensed font without colliding with center
+    const ampStr = is40A ? 'CITATION LINE 40AMPS' : 'CITATION LINE 16AMPS';
+    ctx.fillStyle = '#11141a';
+    ctx.font = '900 32px "Arial Black", "Plus Jakarta Sans", sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText(ampStr, 115, 110);
+
+    // "Vkon" Logo (Faithfully matching Photo 4 with italic bold lettering and orbital ring)
+    const vkonX = 115;
+    const vkonY = 360;
+    ctx.font = 'italic 900 78px "Plus Jakarta Sans", "Trebuchet MS", sans-serif';
+    ctx.fillStyle = '#11141a';
+    ctx.textAlign = 'left';
+    ctx.fillText('Vk', vkonX, vkonY);
+    const vkLen = ctx.measureText('Vk').width;
+
+    ctx.fillText('o', vkonX + vkLen, vkonY);
+    const oLen = ctx.measureText('o').width;
+
+    ctx.fillText('n', vkonX + vkLen + oLen, vkonY);
+
+    // Acute accent dot above 'o' (Vkón - Photo 4)
+    ctx.beginPath();
+    ctx.arc(vkonX + vkLen + oLen * 0.52, vkonY - 68, 7.5, 0, Math.PI * 2);
+    ctx.fillStyle = '#11141a';
+    ctx.fill();
+
+    // Sweeping oval ring encircling Vkon (Photo 4)
+    ctx.save();
+    ctx.beginPath();
+    ctx.ellipse(vkonX + vkLen + oLen * 0.75, vkonY - 28, 120, 38, -0.22, 0, Math.PI * 2);
+    ctx.strokeStyle = '#11141a';
+    ctx.lineWidth = 4;
+    ctx.stroke();
+    ctx.restore();
+
+    // 7. CENTER SECTION: GN TECHNOLOGIES & MADE IN INDIA
+    ctx.fillStyle = '#11141a';
+    ctx.font = '900 22px "Plus Jakarta Sans", "Arial Black", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('GN TECHNOLOGIES', W / 2, 110);
+
+    ctx.font = '900 22px "Plus Jakarta Sans", "Arial Black", sans-serif';
+    ctx.fillText('MADE IN INDIA', W / 2, 392);
+
+    // 8. RIGHT SECTION: Schematic Wiring Diagram (Photo 4)
+    ctx.strokeStyle = '#11141a';
+    ctx.lineWidth = 2.8;
+    const contactCols = [880, 925, 970, 1015];
+    const termLabels = [
+      ['1', '2'],
+      ['3', '4'],
+      ['5', '6'],
+      ['7', '8'],
+    ];
+
+    contactCols.forEach((cx, ci) => {
+      // Top vertical lead
+      ctx.beginPath();
+      ctx.moveTo(cx, 55);
+      ctx.lineTo(cx, 75);
       ctx.stroke();
 
       // Slanted switch arm
       ctx.beginPath();
-      ctx.moveTo(cx, diagY + 22);
-      ctx.lineTo(cx + 8, diagY + 38);
+      ctx.moveTo(cx, 75);
+      ctx.lineTo(cx + 9, 100);
       ctx.stroke();
 
-      // Bottom lead
+      // Bottom terminal contact circle
       ctx.beginPath();
-      ctx.moveTo(cx, diagY + 38);
-      ctx.lineTo(cx, diagY + 50);
+      ctx.arc(cx, 104, 3.2, 0, Math.PI * 2);
       ctx.stroke();
 
-      // Numbers
-      ctx.fillStyle = '#111';
-      ctx.font = 'bold 14px monospace';
+      // Bottom vertical lead
+      ctx.beginPath();
+      ctx.moveTo(cx, 107);
+      ctx.lineTo(cx, 125);
+      ctx.stroke();
+
+      // Number labels
+      ctx.fillStyle = '#11141a';
+      ctx.font = 'bold 15px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
-      ctx.fillText(contactNums[ci][0], cx - 8, diagY + 18);
-      ctx.fillText(contactNums[ci][1], cx - 8, diagY + 50);
+      ctx.fillText(termLabels[ci][0], cx - 11, 68);
+      ctx.fillText(termLabels[ci][1], cx - 11, 122);
     });
 
-    // Coil symbol (A1 - A2)
-    ctx.strokeRect(840, diagY + 15, 36, 24);
+    // Horizontal dashed ganging link to coil
     ctx.beginPath();
-    ctx.moveTo(840, diagY + 15);
-    ctx.lineTo(876, diagY + 39);
+    ctx.setLineDash([4, 4]);
+    ctx.moveTo(1015 + 9, 92);
+    ctx.lineTo(1060, 92);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Coil symbol (A1 - A2)
+    ctx.strokeRect(1060, 72, 44, 40);
+    ctx.beginPath();
+    ctx.moveTo(1060, 72);
+    ctx.lineTo(1104, 112);
     ctx.stroke();
 
-    ctx.font = 'bold 14px monospace';
-    ctx.textAlign = 'left';
-    ctx.fillText('A1', 884, diagY + 20);
-    ctx.fillText('A2', 884, diagY + 40);
-
-    // Ratings Table (Photo 4)
-    const tableX = 710;
-    const tableY = diagY + 80;
-
+    // Top lead A1
+    ctx.beginPath();
+    ctx.moveTo(1082, 72);
+    ctx.lineTo(1082, 62);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(1082, 59, 3, 0, Math.PI * 2);
+    ctx.stroke();
     ctx.fillStyle = '#11141a';
-    ctx.font = 'bold 21px "JetBrains Mono", monospace';
-    ctx.fillText('Ith 25A', tableX, tableY);
-    ctx.fillText('AC1, 20A', tableX, tableY + 28);
-    ctx.fillText('AC2, 20A', tableX, tableY + 56);
-    ctx.fillText('AC3, 16A', tableX, tableY + 84);
-    ctx.fillText('AC4, 11A 415V, 50Hz', 530, tableY + 115);
+    ctx.font = 'bold 14px "JetBrains Mono", monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('A1', 1096, 64);
 
+    // Bottom lead A2
+    ctx.beginPath();
+    ctx.moveTo(1082, 112);
+    ctx.lineTo(1082, 122);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(1082, 125, 3, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.fillText('A2', 1096, 128);
+
+    // 9. Ratings Table (Photo 4)
+    ctx.fillStyle = '#11141a';
+    ctx.textAlign = 'left';
+    ctx.font = 'bold 24px "JetBrains Mono", monospace';
+    ctx.fillText('Ith 25A', 885, 185);
+    ctx.fillText('AC1, 20A', 885, 222);
+    ctx.fillText('AC2, 20A', 885, 259);
+    ctx.fillText('AC3, 16A', 885, 296);
+
+    // Bottom voltage & frequency specs (Photo 4)
+    ctx.fillText('Ui 660V', 700, 448);
+    ctx.fillText('AC4, 11A 415V, 50Hz', 840, 448);
+
+    return c;
+  }
+
+  // Top Nameplate Texture for Citation Line 16A Contactor (Photo 4)
+  function createCitationLineTopTexture() {
+    const c = renderCitationLineNameplateCanvas(false);
     const tex = new THREE.CanvasTexture(c);
     tex.encoding = THREE.sRGBEncoding;
+    tex.anisotropy = 8;
     return tex;
   }
 
-  // Vertical Nameplate Texture for Citation Line 40A Contactors Mounted in Panel (Photo 8 / User Photo)
+  // Vertical Nameplate Texture for Citation Line 40A Contactors Mounted in Panel (Photos 4 & 8)
+  // Faithfully drawn matching user reference photograph (media_1792571781965.png & Photo 8)
   function createPanelContactorRedCapTexture() {
+    const W = 512;
+    const H = 1280;
     const c = document.createElement('canvas');
-    c.width = 512;
-    c.height = 1024;
+    c.width = W;
+    c.height = H;
     const ctx = c.getContext('2d');
 
-    // Glossy industrial red background
-    ctx.fillStyle = '#cc1824';
-    ctx.fillRect(0, 0, 512, 1024);
+    // 1. Deep glossy industrial red background (Photo 4 & 8)
+    ctx.fillStyle = '#cc1c24';
+    ctx.fillRect(0, 0, W, H);
 
-    // Subtle molded edge bevel
-    ctx.strokeStyle = '#e83842';
+    // Beveled molded plastic rim
+    ctx.strokeStyle = '#e63946';
     ctx.lineWidth = 6;
-    roundRect(ctx, 6, 6, 500, 1012, 14);
+    roundRect(ctx, 6, 6, W - 12, H - 12, 16);
     ctx.stroke();
 
-    // 4 Corner Screw / Washer cutouts (Photo)
-    const screwCorners = [
-      [54, 46],
-      [458, 46],
-      [54, 978],
-      [458, 978],
-    ];
-    screwCorners.forEach(([sx, sy]) => {
-      // Silver washer
+    // 2. Screws at Top and Bottom of Red Cap (Photo 8 / User Photo)
+    const topScrewY = 56;
+    const botScrewY = H - 56;
+    [topScrewY, botScrewY].forEach((sy) => {
+      const sx = W / 2;
+      // Recessed red pocket
       ctx.beginPath();
-      ctx.arc(sx, sy, 32, 0, Math.PI * 2);
+      ctx.arc(sx, sy, 40, 0, Math.PI * 2);
+      ctx.fillStyle = '#9e1018';
+      ctx.fill();
+
+      // Outer silver washer
+      ctx.beginPath();
+      ctx.arc(sx, sy, 34, 0, Math.PI * 2);
       ctx.fillStyle = '#e2e7ec';
       ctx.fill();
       ctx.strokeStyle = '#8a94a0';
       ctx.lineWidth = 3;
       ctx.stroke();
 
-      // Brass screw head
+      // Pan head screw
+      const grad = ctx.createRadialGradient(sx - 4, sy - 4, 2, sx, sy, 22);
+      grad.addColorStop(0, '#f5f7fa');
+      grad.addColorStop(0.7, '#cfd6de');
+      grad.addColorStop(1, '#9aa3ad');
       ctx.beginPath();
       ctx.arc(sx, sy, 22, 0, Math.PI * 2);
-      ctx.fillStyle = '#d4af37';
+      ctx.fillStyle = grad;
       ctx.fill();
+      ctx.strokeStyle = '#707b88';
+      ctx.lineWidth = 2;
+      ctx.stroke();
 
-      // Slotted screw groove
-      ctx.strokeStyle = '#4a3b10';
+      // Philips cross slot
+      ctx.strokeStyle = '#2c323b';
       ctx.lineWidth = 4;
       ctx.beginPath();
-      ctx.moveTo(sx - 16, sy);
-      ctx.lineTo(sx + 16, sy);
+      ctx.moveTo(sx - 15, sy);
+      ctx.lineTo(sx + 15, sy);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(sx, sy - 15);
+      ctx.lineTo(sx, sy + 15);
       ctx.stroke();
     });
 
-    // ——— 1. UPPER SECTION: WHITE RATING & SCHEMATIC STICKER (Photo) ———
-    const upperY = 88;
-    const upperH = 300;
+    // 3. Waist Brass Threaded Inserts (Left and Right Waist)
+    const midY = H / 2;
+    [18, W - 18].forEach((tx) => {
+      ctx.beginPath();
+      ctx.arc(tx, midY, 30, 0, Math.PI * 2);
+      ctx.fillStyle = '#cc1c24';
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(tx, midY, 20, 0, Math.PI * 2);
+      ctx.fillStyle = '#c8a442';
+      ctx.fill();
+      ctx.strokeStyle = '#997520';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(tx, midY, 10, 0, Math.PI * 2);
+      ctx.fillStyle = '#181818';
+      ctx.fill();
+    });
+
+    // 4. White Vinyl Nameplate Sticker (Photos 4 & 8)
+    const stickerX = 36;
+    const stickerY = 112;
+    const stickerW = W - 72;
+    const stickerH = H - 224;
+
     ctx.fillStyle = '#ffffff';
-    roundRect(ctx, 32, upperY, 448, upperH, 10);
+    roundRect(ctx, stickerX, stickerY, stickerW, stickerH, 12);
     ctx.fill();
 
     // Red border pinstripe
-    ctx.strokeStyle = '#cc1824';
+    ctx.strokeStyle = '#cc1c24';
     ctx.lineWidth = 3;
-    roundRect(ctx, 36, upperY + 4, 440, upperH - 8, 8);
+    roundRect(ctx, stickerX + 4, stickerY + 4, stickerW - 8, stickerH - 8, 10);
     ctx.stroke();
 
-    // Left side: Schematic Wiring Diagram
-    // Contacts: 1/L1-2/T1, 3/L2-4/T2, 5/L3-6/T3, 13NO-14NO
-    ctx.strokeStyle = '#11141a';
-    ctx.lineWidth = 2.5;
-    const schemX = [68, 108, 148, 188];
-    const schemLabels = [
-      ['1/L1', '2/T1'],
-      ['3/L2', '4/T2'],
-      ['5/L3', '6/T3'],
-      ['13NO', '14NO'],
-    ];
+    // 5. Two Center Plunger Windows (Photos 4 & 8)
+    // Vertical layout: one above the other in center
+    const winW = 100;
+    const winH = 150;
+    const winX = (W - winW) / 2;
+    const winY1 = 410;
+    const winY2 = 660;
 
-    schemX.forEach((cx, i) => {
-      // Top vertical lead
-      ctx.beginPath();
-      ctx.moveTo(cx, upperY + 45);
-      ctx.lineTo(cx, upperY + 70);
+    [winY1, winY2].forEach((wy) => {
+      // Dark recess frame
+      ctx.fillStyle = '#180406';
+      roundRect(ctx, winX, wy, winW, winH, 8);
+      ctx.fill();
+      ctx.strokeStyle = '#8c1018';
+      ctx.lineWidth = 2.5;
       ctx.stroke();
 
-      // Slanted contact arm
+      // Protruding cream/white moving core tab
+      const tabGrad = ctx.createLinearGradient(winX, wy, winX + winW, wy + winH);
+      tabGrad.addColorStop(0, '#faf8f2');
+      tabGrad.addColorStop(0.5, '#eae5d8');
+      tabGrad.addColorStop(1, '#d5cfbe');
+      ctx.fillStyle = tabGrad;
+      roundRect(ctx, winX + 8, wy + 8, winW - 16, winH - 16, 5);
+      ctx.fill();
+
+      // Molded bevel lines on core tab
+      ctx.strokeStyle = '#bab4a2';
+      ctx.lineWidth = 1.5;
+      roundRect(ctx, winX + 14, wy + 14, winW - 28, winH - 28, 3);
+      ctx.stroke();
+    });
+
+    // 6. UPPER SECTION: Schematic Wiring Diagram & Ratings Table
+    // Left side: 4-pole contact diagram
+    ctx.strokeStyle = '#11141a';
+    ctx.lineWidth = 3.2;
+    const contactCols = [72, 108, 144, 180];
+    const termLabels = [
+      ['1', '2'],
+      ['3', '4'],
+      ['5', '6'],
+      ['7', '8'],
+    ];
+
+    contactCols.forEach((cx, ci) => {
+      // Top vertical lead
       ctx.beginPath();
-      ctx.moveTo(cx, upperY + 70);
-      ctx.lineTo(cx + 10, upperY + 98);
+      ctx.moveTo(cx, 145);
+      ctx.lineTo(cx, 175);
+      ctx.stroke();
+
+      // Slanted switch arm
+      ctx.beginPath();
+      ctx.moveTo(cx, 175);
+      ctx.lineTo(cx + 8, 205);
+      ctx.stroke();
+
+      // Bottom terminal contact circle
+      ctx.beginPath();
+      ctx.arc(cx, 210, 3.5, 0, Math.PI * 2);
       ctx.stroke();
 
       // Bottom vertical lead
       ctx.beginPath();
-      ctx.moveTo(cx, upperY + 98);
-      ctx.lineTo(cx, upperY + 125);
+      ctx.moveTo(cx, 213);
+      ctx.lineTo(cx, 235);
       ctx.stroke();
 
-      // Terminal text labels
+      // Number labels
       ctx.fillStyle = '#11141a';
-      ctx.font = 'bold 13px "JetBrains Mono", monospace';
+      ctx.font = 'bold 16px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
-      ctx.fillText(schemLabels[i][0], cx, upperY + 36);
-      ctx.fillText(schemLabels[i][1], cx, upperY + 142);
+      ctx.fillText(termLabels[ci][0], cx - 11, 160);
+      ctx.fillText(termLabels[ci][1], cx - 11, 230);
     });
+
+    // Horizontal dashed link to coil
+    ctx.beginPath();
+    ctx.setLineDash([4, 4]);
+    ctx.moveTo(180 + 8, 195);
+    ctx.lineTo(215, 195);
+    ctx.stroke();
+    ctx.setLineDash([]);
 
     // Coil symbol (A1 - A2)
-    ctx.strokeRect(60, upperY + 175, 48, 28);
+    ctx.strokeRect(215, 175, 36, 40);
     ctx.beginPath();
-    ctx.moveTo(60, upperY + 175);
-    ctx.lineTo(108, upperY + 203);
+    ctx.moveTo(215, 175);
+    ctx.lineTo(251, 215);
     ctx.stroke();
-    ctx.font = 'bold 14px "JetBrains Mono", monospace';
-    ctx.textAlign = 'left';
-    ctx.fillText('A1', 116, upperY + 185);
-    ctx.fillText('A2', 116, upperY + 201);
 
-    // Right side: Ratings Table (Photo)
+    // Top lead A1
+    ctx.beginPath();
+    ctx.moveTo(233, 175);
+    ctx.lineTo(233, 160);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(233, 157, 3.5, 0, Math.PI * 2);
+    ctx.stroke();
     ctx.fillStyle = '#11141a';
-    ctx.textAlign = 'left';
-    ctx.font = 'bold 18px "Plus Jakarta Sans", sans-serif';
-    ctx.fillText('Ith 25A', 255, upperY + 42);
-
     ctx.font = 'bold 15px "JetBrains Mono", monospace';
-    const ratings = [
-      'AC1, 20A',
-      'AC2, 20A',
-      'AC3, 16A',
-      'AC4, 11A',
-      '415V, 50Hz',
-      'Ui 660V',
-    ];
-    ratings.forEach((txt, idx) => {
-      ctx.fillText(txt, 255, upperY + 74 + idx * 26);
-    });
-
-    // ——— 2. MIDDLE SECTION: MOLDED RED CROSSBAR & SN TECHNOLOGIES SLIDER ———
-    const midY = 405;
-    // Dark recess slot for mechanical plunger
-    ctx.fillStyle = '#1a0406';
-    roundRect(ctx, 150, midY + 10, 212, 46, 6);
-    ctx.fill();
-
-    // Brass/Red indicator slider inside slot
-    ctx.fillStyle = '#c82333';
-    roundRect(ctx, 165, midY + 14, 182, 38, 4);
-    ctx.fill();
-    ctx.strokeStyle = '#d4af37';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-
-    // "SN TECHNOLOGIES" on slider (Photo)
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 14px "Plus Jakarta Sans", sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('SN TECHNOLOGIES', 256, midY + 38);
-
-    // Center circular brass eyelet / brass disc
-    ctx.beginPath();
-    ctx.arc(256, midY + 74, 9, 0, Math.PI * 2);
-    ctx.fillStyle = '#d4af37';
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(256, midY + 74, 4.5, 0, Math.PI * 2);
-    ctx.fillStyle = '#1a0406';
-    ctx.fill();
-
-    // "MADE IN INDIA" below slider (Photo)
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 15px "Plus Jakarta Sans", sans-serif';
-    ctx.fillText('MADE IN INDIA', 256, midY + 106);
-
-    // ——— 3. LOWER SECTION: WHITE NAMEPLATE WITH VERTICAL CITATION & VKON ———
-    const lowerY = 535;
-    const lowerH = 425;
-    ctx.fillStyle = '#ffffff';
-    roundRect(ctx, 32, lowerY, 448, lowerH, 10);
-    ctx.fill();
-
-    // Red border pinstripe
-    ctx.strokeStyle = '#cc1824';
-    ctx.lineWidth = 3;
-    roundRect(ctx, 36, lowerY + 4, 440, lowerH - 8, 8);
-    ctx.stroke();
-
-    // Left Column: "CITATION LINE 40AMPS" running vertically bottom-to-top (Photo)
-    ctx.save();
-    ctx.translate(130, lowerY + lowerH - 40);
-    ctx.rotate(-Math.PI / 2);
-    ctx.fillStyle = '#11141a';
-    ctx.font = '900 32px "Plus Jakarta Sans", sans-serif';
     ctx.textAlign = 'left';
+    ctx.fillText('A1', 244, 162);
+
+    // Bottom lead A2
+    ctx.beginPath();
+    ctx.moveTo(233, 215);
+    ctx.lineTo(233, 230);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(233, 233, 3.5, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.fillText('A2', 244, 236);
+
+    // Right side: Ratings Table (Photo 4 & 8)
+    ctx.fillStyle = '#11141a';
+    ctx.textAlign = 'left';
+    ctx.font = 'bold 24px "JetBrains Mono", monospace';
+    ctx.fillText('Ith 25A', 256, 162);
+    ctx.fillText('AC1, 20A', 256, 200);
+    ctx.fillText('AC2, 20A', 256, 238);
+    ctx.fillText('AC3, 16A', 256, 276);
+    ctx.fillText('Ui 660V', 256, 318);
+    ctx.font = 'bold 21px "JetBrains Mono", monospace';
+    ctx.fillText('AC4, 11A 415V, 50Hz', 256, 356);
+
+    // 7. MIDDLE SECTION: GN TECHNOLOGIES & MADE IN INDIA (Vertical text beside windows)
+    ctx.save();
+    ctx.translate(148, 485);
+    ctx.rotate(-Math.PI / 2);
+    ctx.font = '900 20px "Plus Jakarta Sans", "Arial Black", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#11141a';
+    ctx.fillText('GN TECHNOLOGIES', 0, 0);
+    ctx.restore();
+
+    ctx.save();
+    ctx.translate(148, 735);
+    ctx.rotate(-Math.PI / 2);
+    ctx.font = '900 20px "Plus Jakarta Sans", "Arial Black", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#11141a';
+    ctx.fillText('MADE IN INDIA', 0, 0);
+    ctx.restore();
+
+    // 8. LOWER SECTION: CITATION LINE 40AMPS & VKON LOGO
+    // Vertical text reading upwards along left side
+    ctx.save();
+    ctx.translate(108, 1140);
+    ctx.rotate(-Math.PI / 2);
+    ctx.font = '900 32px "Arial Black", "Plus Jakarta Sans", sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#11141a';
     ctx.fillText('CITATION LINE 40AMPS', 0, 0);
     ctx.restore();
 
-    // Center / Right Column: "Vkon" Logo running vertically bottom-to-top (Photo)
-    ctx.save();
-    ctx.translate(330, lowerY + lowerH - 50);
-    ctx.rotate(-Math.PI / 2);
-
-    // Vkon text
-    ctx.font = '900 88px "Plus Jakarta Sans", sans-serif';
-    ctx.fillStyle = '#0f141c';
+    // Vkon Logo in lower-right
+    const vkonX = 220;
+    const vkonY = 1080;
+    ctx.font = 'italic 900 68px "Plus Jakarta Sans", "Trebuchet MS", sans-serif';
+    ctx.fillStyle = '#11141a';
     ctx.textAlign = 'left';
-    ctx.fillText('Vk', 0, 0);
+    ctx.fillText('Vk', vkonX, vkonY);
+    const vkLen = ctx.measureText('Vk').width;
+    ctx.fillText('o', vkonX + vkLen, vkonY);
+    const oLen = ctx.measureText('o').width;
+    ctx.fillText('n', vkonX + vkLen + oLen, vkonY);
 
-    const vkWidth = ctx.measureText('Vk').width;
-
-    // Red 'o'
-    ctx.fillStyle = '#cc1824';
-    ctx.fillText('o', vkWidth, 0);
-    const oWidth = ctx.measureText('o').width;
-
-    // Black 'n'
-    ctx.fillStyle = '#0f141c';
-    ctx.fillText('n', vkWidth + oWidth, 0);
-
-    // Cyan swirl arc curving above 'o'
+    // Accent dot above 'o'
     ctx.beginPath();
-    ctx.ellipse(vkWidth + oWidth / 2, -65, 30, 10, 0.1, 0, Math.PI * 2);
-    ctx.strokeStyle = '#00a8ff';
-    ctx.lineWidth = 6;
-    ctx.stroke();
+    ctx.arc(vkonX + vkLen + oLen * 0.52, vkonY - 60, 6.5, 0, Math.PI * 2);
+    ctx.fillStyle = '#11141a';
+    ctx.fill();
 
+    // Sweeping oval ring encircling Vkon
+    ctx.save();
+    ctx.beginPath();
+    ctx.ellipse(vkonX + vkLen + oLen * 0.75, vkonY - 24, 105, 34, -0.22, 0, Math.PI * 2);
+    ctx.strokeStyle = '#11141a';
+    ctx.lineWidth = 3.5;
+    ctx.stroke();
     ctx.restore();
 
     const tex = new THREE.CanvasTexture(c);
@@ -1132,6 +1329,25 @@
   const switchGreenMat = new THREE.MeshStandardMaterial({ color: 0x10ac84, roughness: 0.35 });
   const switchRedMat = new THREE.MeshStandardMaterial({ color: 0xee5253, roughness: 0.35 });
   const switchBlueMat = new THREE.MeshStandardMaterial({ color: 0x2e86de, roughness: 0.35 });
+
+  // Terminal block specialized materials (matching user reference photo)
+  const yellowZincMat = new THREE.MeshStandardMaterial({
+    color: 0xbfa045, // Yellow-zinc dichromate passivated finish (Photo)
+    roughness: 0.32,
+    metalness: 0.82,
+  });
+
+  const bareCopperMat = new THREE.MeshStandardMaterial({
+    color: 0xc8733b, // Bare shiny copper conductor (Photo)
+    roughness: 0.25,
+    metalness: 0.88,
+  });
+
+  const twistedBrownMat = new THREE.MeshStandardMaterial({
+    color: 0x8a4b22, // Twisted pair brown insulation (Photo)
+    roughness: 0.65,
+    metalness: 0.05,
+  });
 
   // ================================================================
   //  PANEL DIMENSIONS (Matching Actual Physical Spec)
@@ -1633,16 +1849,16 @@
     topCapGroup.add(nameplateMesh);
 
     // Two silver pan screws with washers at left & right ends of red cap (Photo 4)
-    [-0.031 * s, 0.031 * s].forEach((sx) => {
+    [-0.033 * s, 0.033 * s].forEach((sx) => {
       const wsh = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.0042 * s, 0.0042 * s, 0.0008 * s, 14),
+        new THREE.CylinderGeometry(0.0038 * s, 0.0038 * s, 0.0008 * s, 14),
         chromeMat
       );
       wsh.position.set(sx, capY + capH / 2 + 0.0008 * s, 0);
       topCapGroup.add(wsh);
 
       const scr = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.003 * s, 0.003 * s, 0.0016 * s, 10),
+        new THREE.CylinderGeometry(0.0026 * s, 0.0026 * s, 0.0016 * s, 10),
         chromeMat
       );
       scr.position.set(sx, capY + capH / 2 + 0.0016 * s, 0);
@@ -1652,24 +1868,25 @@
     group.add(topCapGroup);
 
     // ——— 6. TWO INTERACTIVE WHITE PUSH PLUNGERS (Photo 4) ———
+    // Aligned with the two center window cutouts on the nameplate
     const plunger1 = new THREE.Mesh(
-      new THREE.BoxGeometry(0.008 * s, 0.012 * s, 0.010 * s),
+      new THREE.BoxGeometry(0.0056 * s, 0.008 * s, 0.008 * s),
       contactorPlungerWhiteMat
     );
-    plunger1.position.set(-0.010 * s, capY + capH / 2 + 0.004 * s, 0);
+    plunger1.position.set(-0.0053 * s, capY + capH / 2 + 0.002 * s, 0);
     plunger1.castShadow = true;
     group.add(plunger1);
 
     const plunger2 = new THREE.Mesh(
-      new THREE.BoxGeometry(0.008 * s, 0.012 * s, 0.010 * s),
+      new THREE.BoxGeometry(0.0056 * s, 0.008 * s, 0.008 * s),
       contactorPlungerWhiteMat
     );
-    plunger2.position.set(0.010 * s, capY + capH / 2 + 0.004 * s, 0);
+    plunger2.position.set(0.0053 * s, capY + capH / 2 + 0.002 * s, 0);
     plunger2.castShadow = true;
     group.add(plunger2);
 
     group.userData.plungers = [plunger1, plunger2];
-    group.userData.restY = capY + capH / 2 + 0.004 * s;
+    group.userData.restY = capY + capH / 2 + 0.002 * s;
 
     if (isStandalone) {
       standaloneContactorGroup = group;
@@ -1724,13 +1941,14 @@
     intGroup.add(tfGroup);
 
     // ——— B. 3 CITATION LINE 40A CONTACTORS (Photo 8 / User Reference) ———
-    // Contactor 1 (Left): x = -0.075, No Aux Block (Full Red Cap visible)
-    // Contactor 2 (Middle): x = 0.025, Has Transparent Aux Block on front
-    // Contactor 3 (Right): x = 0.125, Has Transparent Aux Block on front
+    // All 3 contactors mounted horizontally, upright and facing forward (+Z)
+    // Contactor 1 (Left): x = -0.082, No Aux Block (Full Red Cap visible)
+    // Contactor 2 (Middle): x = 0.022, Has Transparent Aux Block in center
+    // Contactor 3 (Right): x = 0.126, Has Transparent Aux Block in center
     const cPositions = [
-      { x: -0.075, hasAux: false },
-      { x: 0.025, hasAux: true },
-      { x: 0.125, hasAux: true },
+      { x: -0.082, hasAux: false },
+      { x: 0.022, hasAux: true },
+      { x: 0.126, hasAux: true },
     ];
     const cY = 0.052;
 
@@ -1740,96 +1958,94 @@
       intGroup.add(c);
     });
 
-    // Horizontal heavy inter-contactor bus jumper conductors (Photo 8 / user photo)
-    // 4 jumpers between Contactor 1 (right terminals) and Contactor 2 (left terminals)
-    // 4 jumpers between Contactor 2 (right terminals) and Contactor 3 (left terminals)
-    const termY = [0.027, 0.009, -0.009, -0.027];
-    const wireZ = baseFloorZ + 0.044;
+    // Horizontal heavy inter-contactor bus jumper conductors (Photos 4 & 8 / User Reference)
+    // 4 straight horizontal black bus wires between Contactor 1 (right terminals) and Contactor 2 (left terminals)
+    // 4 straight horizontal black bus wires between Contactor 2 (right terminals) and Contactor 3 (left terminals)
+    const termYOffsets = [0.027, 0.009, -0.009, -0.027];
+    const wireZ = baseFloorZ + 0.038 + 0.004;
 
-    termY.forEach((ty, idx) => {
+    termYOffsets.forEach((ty, idx) => {
       const wy = cY + ty;
 
-      // Contactor 1 right terminal (x = -0.075 + 0.026 = -0.049) to Contactor 2 left terminal (x = 0.025 - 0.026 = -0.001)
-      const jumper1 = makeWireSegment(
-        -0.049, wy, wireZ,
-        -0.001, wy, wireZ,
-        0.0022, wireBlackMat
-      );
-      intGroup.add(jumper1);
+      // Contactor 1 right terminal (x = -0.082 + 0.026 = -0.056) to Contactor 2 left terminal (x = 0.022 - 0.026 = -0.004)
+      const x1 = -0.082 + 0.026;
+      const x2 = 0.022 - 0.026;
+      const jMesh1 = makeWireSegment(x1, wy, wireZ, x2, wy, wireZ, 0.0024, wireBlackMat);
+      intGroup.add(jMesh1);
 
-      // On wire 2 (idx 2): white specification print mark on black wire (Photo: "4.0 SQ.MM")
+      // White specification print on wire 3 ("4.0 SQ.MM" — Photo)
       if (idx === 2) {
         const specPrint = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.0023, 0.0023, 0.016, 8),
+          new THREE.CylinderGeometry(0.0026, 0.0026, 0.016, 8),
           new THREE.MeshBasicMaterial({ color: 0xdedede })
         );
         specPrint.rotation.z = Math.PI / 2;
-        specPrint.position.set(-0.025, wy, wireZ);
+        specPrint.position.set((x1 + x2) / 2, wy, wireZ);
         intGroup.add(specPrint);
       }
 
-      // Contactor 2 right terminal (x = 0.025 + 0.026 = 0.051) to Contactor 3 left terminal (x = 0.125 - 0.026 = 0.099)
-      const jumper2 = makeWireSegment(
-        0.051, wy, wireZ,
-        0.099, wy, wireZ,
-        0.0022, wireBlackMat
-      );
-      intGroup.add(jumper2);
+      // Contactor 2 right terminal (x = 0.022 + 0.026 = 0.048) to Contactor 3 left terminal (x = 0.126 - 0.026 = 0.100)
+      const x3 = 0.022 + 0.026;
+      const x4 = 0.126 - 0.026;
+      const jMesh2 = makeWireSegment(x3, wy, wireZ, x4, wy, wireZ, 0.0024, wireBlackMat);
+      intGroup.add(jMesh2);
     });
 
-    // Top loop jumper wire running across top of all 3 contactors (Photo)
+    // Feed wires on Left of Contactor 1 (entering left terminals and routing down into duct — Photo)
+    const c1LeftX = -0.082 - 0.026;
+    [
+      { ty: 0.027, loopX: -0.124, ductX: -0.120 },
+      { ty: 0.009, loopX: -0.118, ductX: -0.114 },
+      { ty: -0.009, loopX: -0.112, ductX: -0.108 },
+      { ty: -0.027, loopX: -0.106, ductX: -0.102 },
+    ].forEach((cfg) => {
+      const wy = cY + cfg.ty;
+      const curve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(c1LeftX, wy, wireZ),
+        new THREE.Vector3(cfg.loopX, wy - 0.006, wireZ + 0.002),
+        new THREE.Vector3(cfg.ductX, -0.028, baseFloorZ + 0.020),
+      ]);
+      intGroup.add(new THREE.Mesh(
+        new THREE.TubeGeometry(curve, 16, 0.0022, 6, false),
+        wireBlackMat
+      ));
+    });
+
+    // Outgoing wires on Right of Contactor 3 (leaving right terminals and routing down into duct — Photo)
+    const c3RightX = 0.126 + 0.026;
+    [
+      { ty: 0.027, loopX: 0.166, ductX: 0.162 },
+      { ty: 0.009, loopX: 0.160, ductX: 0.156 },
+      { ty: -0.009, loopX: 0.154, ductX: 0.150 },
+      { ty: -0.027, loopX: 0.148, ductX: 0.144 },
+    ].forEach((cfg) => {
+      const wy = cY + cfg.ty;
+      const curve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(c3RightX, wy, wireZ),
+        new THREE.Vector3(cfg.loopX, wy - 0.006, wireZ + 0.002),
+        new THREE.Vector3(cfg.ductX, -0.028, baseFloorZ + 0.020),
+      ]);
+      intGroup.add(new THREE.Mesh(
+        new THREE.TubeGeometry(curve, 16, 0.0022, 6, false),
+        wireBlackMat
+      ));
+    });
+
+    // Top loop interconnect wire linking aux blocks and coil terminals (Photo)
+    const auxFrontZ = baseFloorZ + 0.038 + 0.016 + 0.016;
     const topLoopCurve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(-0.049, cY + 0.034, wireZ),
-      new THREE.Vector3(-0.049, cY + 0.046, wireZ + 0.004),
-      new THREE.Vector3(-0.010, cY + 0.047, wireZ + 0.006),
-      new THREE.Vector3(0.025, cY + 0.047, wireZ + 0.006),
-      new THREE.Vector3(0.075, cY + 0.047, wireZ + 0.006),
-      new THREE.Vector3(0.125, cY + 0.047, wireZ + 0.006),
-      new THREE.Vector3(0.151, cY + 0.045, wireZ + 0.004),
-      new THREE.Vector3(0.151, cY + 0.027, wireZ),
+      new THREE.Vector3(-0.082, cY + 0.042, wireZ),
+      new THREE.Vector3(-0.030, cY + 0.045, wireZ + 0.004),
+      new THREE.Vector3(0.013, cY + 0.012, auxFrontZ),
+      new THREE.Vector3(0.022, cY + 0.042, wireZ + 0.006),
+      new THREE.Vector3(0.074, cY + 0.045, wireZ + 0.006),
+      new THREE.Vector3(0.117, cY + 0.012, auxFrontZ),
+      new THREE.Vector3(0.126, cY + 0.042, wireZ),
     ]);
-    const topLoopMesh = new THREE.Mesh(
-      new THREE.TubeGeometry(topLoopCurve, 28, 0.0016, 6, false),
+    intGroup.add(new THREE.Mesh(
+      new THREE.TubeGeometry(topLoopCurve, 32, 0.0016, 6, false),
       wireBlackMat
-    );
-    intGroup.add(topLoopMesh);
-
-    // Contactor 1 left-side incoming wiring loops (Photo)
-    const c1LeftY = [0.027, 0.009, -0.009, -0.027];
-    c1LeftY.forEach((ty, i) => {
-      const wy = cY + ty;
-      const c1Curve = new THREE.CatmullRomCurve3([
-        new THREE.Vector3(-0.101, wy, wireZ),
-        new THREE.Vector3(-0.112, wy, wireZ - 0.006),
-        new THREE.Vector3(-0.114, wy - 0.015, wireZ - 0.012),
-        new THREE.Vector3(-0.106, -0.028, baseFloorZ + 0.020),
-      ]);
-      intGroup.add(new THREE.Mesh(new THREE.TubeGeometry(c1Curve, 14, 0.0020, 6, false), wireBlackMat));
-    });
-
-    // Contactor 3 right-side wiring loops dropping down into trunking (Photo)
-    c1LeftY.forEach((ty, i) => {
-      const wy = cY + ty;
-      const c3Curve = new THREE.CatmullRomCurve3([
-        new THREE.Vector3(0.151, wy, wireZ),
-        new THREE.Vector3(0.160, wy, wireZ - 0.006),
-        new THREE.Vector3(0.160, wy - 0.015, wireZ - 0.012),
-        new THREE.Vector3(0.152, -0.028, baseFloorZ + 0.020),
-      ]);
-      intGroup.add(new THREE.Mesh(new THREE.TubeGeometry(c3Curve, 14, 0.0020, 6, false), wireBlackMat));
-    });
-
-    // Vertical black cables dropping straight from middle terminals down into trunking (Photo)
-    [-0.075, 0.025, 0.125].forEach((cx) => {
-      [-0.008, 0.008].forEach((wx) => {
-        const drop = makeWireSegment(
-          cx + wx, cY - 0.038, wireZ - 0.008,
-          cx + wx, -0.028, baseFloorZ + 0.020,
-          0.0022, wireBlackMat
-        );
-        intGroup.add(drop);
-      });
-    });
+    ));
 
     // Twisted transformer control wires (red / brown) dropping into trunking (Photo)
     const tfWireCurve = new THREE.CatmullRomCurve3([
@@ -1842,31 +2058,12 @@
 
     // White/cream control wire between Contactor 2 and 3 (Photo)
     const whiteWireCurve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(0.082, cY + 0.020, wireZ - 0.010),
-      new THREE.Vector3(0.080, cY - 0.010, wireZ - 0.012),
-      new THREE.Vector3(0.076, -0.028, baseFloorZ + 0.020),
+      new THREE.Vector3(0.074, cY + 0.015, wireZ - 0.008),
+      new THREE.Vector3(0.072, cY - 0.010, wireZ - 0.010),
+      new THREE.Vector3(0.070, -0.028, baseFloorZ + 0.020),
     ]);
     const whiteWireMat = new THREE.MeshStandardMaterial({ color: 0xf0ece1, roughness: 0.6 });
     intGroup.add(new THREE.Mesh(new THREE.TubeGeometry(whiteWireCurve, 12, 0.0014, 6, false), whiteWireMat));
-
-    // Inter-aux block jumper wire connecting Contactor 2 aux block to Contactor 3 aux block (Photo)
-    const auxFrontZ = baseFloorZ + 0.054 + 0.016;
-    const auxWire23 = makeWireSegment(
-      0.025 + 0.009, cY + 0.008 + 0.010, auxFrontZ,
-      0.125 - 0.009, cY + 0.008 + 0.010, auxFrontZ,
-      0.0014, wireBlackMat
-    );
-    intGroup.add(auxWire23);
-
-    // Twisted orange/brown wire pair running between bottom terminal blocks (Photo)
-    const tbWireCurve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(0.005, -0.065, baseFloorZ + 0.024),
-      new THREE.Vector3(-0.025, -0.060, baseFloorZ + 0.025),
-      new THREE.Vector3(-0.055, -0.065, baseFloorZ + 0.024),
-    ]);
-    const tbWireMat = new THREE.MeshStandardMaterial({ color: 0xd35400, roughness: 0.65 });
-    intGroup.add(new THREE.Mesh(new THREE.TubeGeometry(tbWireCurve, 12, 0.0012, 6, false), tbWireMat));
-
 
     // ——— C. HORIZONTAL GREY SLOTTED WIRE DUCT / RACEWAY ———
     // Runs horizontally below contactors (Photo 8 / User Photo)
@@ -1894,25 +2091,26 @@
       intGroup.add(slot);
     }
 
-    // ——— D. 3 HEAVY-DUTY TERMINAL BLOCKS (Bottom Row — Photo 8 / User Photo) ———
+    // ——— D. 3 HEAVY-DUTY TERMINAL BLOCKS (Bottom Row — Exactly Matching User Photo) ———
     // Exactly aligned below the 3 Contactors!
     // Labels: [R Y B MOTOR], [B Y R MAINS], [R Y B MOTOR]
     const tbConfigs = [
-      { x: -0.075, isMains: false, labelText: 'MOTOR' },
-      { x: 0.025, isMains: true, labelText: 'MAINS' },
-      { x: 0.125, isMains: false, labelText: 'MOTOR' },
+      { x: -0.082, isMains: false, labelText: 'MOTOR' },
+      { x: 0.022, isMains: true, labelText: 'MAINS' },
+      { x: 0.126, isMains: false, labelText: 'MOTOR' },
     ];
 
     const tbY = -0.092;
-    const tbW = 0.068;
-    const tbH = 0.042;
-    const tbD = 0.026;
+    const tbW = 0.072;
+    const tbH = 0.046;
+    const tbD = 0.024;
+    const wireZ_tb = baseFloorZ + tbD / 2 + 0.002;
 
-    tbConfigs.forEach((tb) => {
+    tbConfigs.forEach((tb, tbIdx) => {
       const tbGroup = new THREE.Group();
       tbGroup.position.set(tb.x, tbY, baseFloorZ + tbD / 2);
 
-      // Molded Black Bakelite block base with side mounting flanges (Photo)
+      // Molded Black Bakelite block base (User Photo)
       const block = new THREE.Mesh(
         new THREE.BoxGeometry(tbW, tbH, tbD),
         contactorBakeliteMat
@@ -1920,65 +2118,150 @@
       block.castShadow = true;
       tbGroup.add(block);
 
-      // Side mounting flanges with screws (Photo)
-      [-tbW / 2 - 0.004, tbW / 2 + 0.004].forEach((fx) => {
+      // Side mounting flanges with recessed silver screws (User Photo)
+      [-tbW / 2 - 0.0045, tbW / 2 + 0.0045].forEach((fx) => {
         const flange = new THREE.Mesh(
-          new THREE.BoxGeometry(0.008, 0.016, 0.006),
+          new THREE.BoxGeometry(0.009, 0.018, 0.006),
           contactorBakeliteMat
         );
         flange.position.set(fx, 0, -tbD / 2 + 0.003);
         tbGroup.add(flange);
 
+        // Silver pan head mounting screw with washer
         const scr = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.0022, 0.0022, 0.002, 10),
+          new THREE.CylinderGeometry(0.0024, 0.0024, 0.0022, 12),
           chromeMat
         );
         scr.rotation.x = Math.PI / 2;
-        scr.position.set(fx, 0, -tbD / 2 + 0.0065);
+        scr.position.set(fx, 0, -tbD / 2 + 0.007);
         tbGroup.add(scr);
+
+        const slot = new THREE.Mesh(
+          new THREE.PlaneGeometry(0.0032, 0.0008),
+          new THREE.MeshBasicMaterial({ color: 0x222222 })
+        );
+        slot.position.set(fx, 0, -tbD / 2 + 0.0082);
+        tbGroup.add(slot);
       });
 
-      // 4 Vertical Barrier Fins separating the 3 terminal poles (Photo)
-      [-0.023, -0.008, 0.008, 0.023].forEach((bx) => {
+      // 4 Vertical Barrier Fins separating the 3 terminal poles (User Photo)
+      const finXPositions = [-0.024, -0.008, 0.008, 0.024];
+      finXPositions.forEach((bx) => {
         const fin = new THREE.Mesh(
-          new THREE.BoxGeometry(0.0022, tbH, 0.012),
+          new THREE.BoxGeometry(0.0024, tbH, 0.014),
           contactorBakeliteMat
         );
-        fin.position.set(bx, 0, tbD / 2 + 0.004);
+        fin.position.set(bx, 0, tbD / 2 + 0.005);
+        fin.castShadow = true;
         tbGroup.add(fin);
       });
 
-      // 6 brass screw terminal posts with square washers (3 upper, 3 lower)
-      [-0.0155, 0, 0.0155].forEach((tx) => {
-        [-0.011, 0.011].forEach((ty) => {
-          // Square brass clamp plate
+      // Central Molded Cylindrical Crossbar / Tie-Bar across barrier fins (User Photo)
+      const crossbar = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.0022, 0.0022, 0.052, 16),
+        contactorBakeliteMat
+      );
+      crossbar.rotation.z = Math.PI / 2;
+      crossbar.position.set(0, 0, tbD / 2 + 0.0055);
+      crossbar.castShadow = true;
+      tbGroup.add(crossbar);
+
+      // 6 Heavy-Duty Clamping Terminals with Square Yellow-Zinc Clamping Washers (User Photo)
+      // 3 Upper terminals, 3 Lower terminals
+      const poleXPositions = [-0.016, 0, 0.016];
+      poleXPositions.forEach((tx, pIdx) => {
+        [-0.012, 0.012].forEach((ty) => {
+          // Square Yellow-Zinc passivated saddle clamping washer plate (Photo)
           const washer = new THREE.Mesh(
-            new THREE.BoxGeometry(0.0085, 0.0085, 0.0016),
-            contactorBrassMat
+            new THREE.BoxGeometry(0.0095, 0.0095, 0.0018),
+            yellowZincMat
           );
-          washer.position.set(tx, ty, tbD / 2 + 0.001);
+          washer.position.set(tx, ty, tbD / 2 + 0.0012);
+          washer.castShadow = true;
           tbGroup.add(washer);
 
-          // Brass terminal screw
+          // Yellow-Zinc pan-head terminal screw with combination drive (Photo)
           const screw = new THREE.Mesh(
-            new THREE.CylinderGeometry(0.0032, 0.0032, 0.0035, 10),
-            contactorBrassMat
+            new THREE.CylinderGeometry(0.0034, 0.0034, 0.0032, 14),
+            yellowZincMat
           );
           screw.rotation.x = Math.PI / 2;
-          screw.position.set(tx, ty, tbD / 2 + 0.0035);
+          screw.position.set(tx, ty, tbD / 2 + 0.0036);
+          screw.castShadow = true;
           tbGroup.add(screw);
 
-          // Connecting wire running from upper terminal into the duct above (Photo)
+          // Combination cross-slot + flathead drive
+          const crsSlot = new THREE.Mesh(
+            new THREE.PlaneGeometry(0.0048, 0.0012),
+            new THREE.MeshBasicMaterial({ color: 0x221a08 })
+          );
+          crsSlot.position.set(tx, ty, tbD / 2 + 0.0053);
+          tbGroup.add(crsSlot);
+
+          const flatSlot = new THREE.Mesh(
+            new THREE.PlaneGeometry(0.0012, 0.0048),
+            new THREE.MeshBasicMaterial({ color: 0x221a08 })
+          );
+          flatSlot.position.set(tx, ty, tbD / 2 + 0.0053);
+          tbGroup.add(flatSlot);
+
+          // Incoming wires dropping from duct above into upper terminals (ty > 0)
           if (ty > 0) {
-            const wire = makeWireSegment(
-              tb.x + tx, tbY + ty, baseFloorZ + tbD / 2 + 0.002,
-              tb.x + tx, ductY - ductH / 2, baseFloorZ + tbD / 2,
-              0.0022, wireBlackMat
-            );
-            intGroup.add(wire);
+            // Special detail from User Photo on right terminal (pIdx === 2):
+            // Bare shiny copper conductor exposed right above washer before black insulation
+            if (pIdx === 2) {
+              const copperSegment = makeWireSegment(
+                tb.x + tx, tbY + ty + 0.001, wireZ_tb,
+                tb.x + tx, tbY + ty + 0.005, wireZ_tb,
+                0.0015, bareCopperMat
+              );
+              intGroup.add(copperSegment);
+
+              const wireBlack = makeWireSegment(
+                tb.x + tx, tbY + ty + 0.005, wireZ_tb,
+                tb.x + tx, ductY - ductH / 2, wireZ_tb,
+                0.0022, wireBlackMat
+              );
+              intGroup.add(wireBlack);
+            } else {
+              const wire = makeWireSegment(
+                tb.x + tx, tbY + ty, wireZ_tb,
+                tb.x + tx, ductY - ductH / 2, wireZ_tb,
+                0.0022, wireBlackMat
+              );
+              intGroup.add(wire);
+            }
           }
         });
       });
+
+      // Twisted brown wire pair running along backplate to the right (User Photo)
+      // Faithfully modeled from the user reference photo!
+      if (tbIdx === 1 || tbIdx === 2) {
+        const brownPts1 = [
+          new THREE.Vector3(tb.x + 0.024, tbY + 0.016, baseFloorZ + tbD / 2 - 0.002),
+          new THREE.Vector3(tb.x + 0.038, tbY + 0.015, baseFloorZ + 0.016),
+          new THREE.Vector3(tb.x + 0.054, tbY + 0.012, baseFloorZ + 0.014),
+          new THREE.Vector3(tb.x + 0.072, tbY + 0.008, baseFloorZ + 0.012),
+        ];
+        const brownCurve1 = new THREE.CatmullRomCurve3(brownPts1);
+        intGroup.add(new THREE.Mesh(
+          new THREE.TubeGeometry(brownCurve1, 16, 0.0010, 6, false),
+          twistedBrownMat
+        ));
+
+        const brownPts2 = [
+          new THREE.Vector3(tb.x + 0.024, tbY + 0.014, baseFloorZ + tbD / 2 - 0.001),
+          new THREE.Vector3(tb.x + 0.038, tbY + 0.017, baseFloorZ + 0.017),
+          new THREE.Vector3(tb.x + 0.054, tbY + 0.010, baseFloorZ + 0.013),
+          new THREE.Vector3(tb.x + 0.072, tbY + 0.009, baseFloorZ + 0.011),
+        ];
+        const brownCurve2 = new THREE.CatmullRomCurve3(brownPts2);
+        intGroup.add(new THREE.Mesh(
+          new THREE.TubeGeometry(brownCurve2, 16, 0.0010, 6, false),
+          twistedBrownMat
+        ));
+      }
 
       // RYB color label strip below the block
       const labelMat = new THREE.MeshBasicMaterial({
@@ -2007,16 +2290,16 @@
     group.name = 'PanelCitationContactor';
 
     const cW = 0.076; // Total width across terminal bays
-    const cH = 0.086; // Total height
+    const cH = 0.088; // Total height
     const bodyD = 0.038; // Bakelite body depth from backplate
-    const capW = 0.032; // Center red cap width
+    const capW = 0.032; // Center red cap width (vertical rectangle)
     const capH = 0.080; // Center red cap height
     const capD = 0.016; // Red cap protrusion forward
     const frontZ = bodyD + capD; // Front face Z
 
     // 1. Steel Mounting Base Plate (screwed flat against backplate)
     const basePlate = new THREE.Mesh(
-      new THREE.BoxGeometry(0.082, 0.090, 0.0025),
+      new THREE.BoxGeometry(0.082, 0.096, 0.0025),
       contactorSteelBaseMat
     );
     basePlate.position.set(0, 0, 0.00125);
@@ -2024,7 +2307,7 @@
     group.add(basePlate);
 
     // Stamped mounting ears top & bottom with screws (Photo)
-    [-0.042, 0.042].forEach((my) => {
+    [-0.045, 0.045].forEach((my) => {
       const ear = new THREE.Mesh(
         new THREE.BoxGeometry(0.024, 0.006, 0.003),
         contactorSteelBaseMat
@@ -2051,22 +2334,20 @@
     bodyMesh.receiveShadow = true;
     group.add(bodyMesh);
 
-    // 3. Left & Right Terminal Bays (Photo 8 / User Reference)
-    // 4 Terminal levels: 0 (top) to 3 (bottom)
+    // 3. Left & Right Terminal Bays (Terminals on LEFT and RIGHT sides!)
+    // 4 Terminal levels: Level 0 (top) to Level 3 (bottom)
     const termY = [0.027, 0.009, -0.009, -0.027];
-    const finY = [0.036, 0.018, 0.0, -0.018, -0.036];
+    const finY = [0.036, 0.018, 0, -0.018, -0.036];
     const bayXOffsets = [-0.026, 0.026];
 
     bayXOffsets.forEach((bx) => {
-      const sign = bx > 0 ? 1 : -1;
-
-      // 5 Separator Barrier Fins
+      // 5 Separator Barrier Fins (horizontal fins)
       finY.forEach((fy) => {
         const fin = new THREE.Mesh(
-          new THREE.BoxGeometry(0.014, 0.0025, 0.022),
+          new THREE.BoxGeometry(0.018, 0.0025, 0.022),
           contactorBakeliteMat
         );
-        fin.position.set(bx + sign * 0.002, fy, bodyD - 0.002);
+        fin.position.set(bx, fy, bodyD - 0.002);
         fin.castShadow = true;
         group.add(fin);
       });
@@ -2100,7 +2381,7 @@
       });
     });
 
-    // 4. Molded Red Center Cap (Photo)
+    // 4. Molded Red Center Cap (Vertical rectangle)
     const redCapMesh = new THREE.Mesh(
       new THREE.BoxGeometry(capW, capH, capD),
       contactorCapRedMat
@@ -2122,20 +2403,59 @@
     nameplateMesh.position.set(0, 0, frontZ + 0.0004);
     group.add(nameplateMesh);
 
-    // 4 Corner Screws with Washers on Red Cap (Photo)
-    [
-      [-capW / 2 + 0.004, capH / 2 - 0.005],
-      [capW / 2 - 0.004, capH / 2 - 0.005],
-      [-capW / 2 + 0.004, -capH / 2 + 0.005],
-      [capW / 2 - 0.004, -capH / 2 + 0.005],
-    ].forEach(([sx, sy]) => {
+    // Top & Bottom Center Mounting Screws on Red Cap (Photo)
+    [capH / 2 - 0.0045, -capH / 2 + 0.0045].forEach((sy) => {
+      const washer = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.0032, 0.0032, 0.0006, 12),
+        chromeMat
+      );
+      washer.rotation.x = Math.PI / 2;
+      washer.position.set(0, sy, frontZ + 0.0008);
+      group.add(washer);
+
       const scr = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.0022, 0.0022, 0.0015, 10),
-        contactorBrassMat
+        new THREE.CylinderGeometry(0.0022, 0.0022, 0.0012, 10),
+        chromeMat
       );
       scr.rotation.x = Math.PI / 2;
-      scr.position.set(sx, sy, frontZ + 0.0012);
+      scr.position.set(0, sy, frontZ + 0.0014);
       group.add(scr);
+
+      const slot = new THREE.Mesh(
+        new THREE.PlaneGeometry(0.0032, 0.0008),
+        new THREE.MeshBasicMaterial({ color: 0x222222 })
+      );
+      slot.position.set(0, sy, frontZ + 0.0021);
+      group.add(slot);
+    });
+
+    // Left and Right Waist Brass Threaded Inserts
+    [-capW / 2 + 0.0016, capW / 2 - 0.0016].forEach((wx) => {
+      const bRing = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.0018, 0.0018, 0.0010, 10),
+        contactorBrassMat
+      );
+      bRing.rotation.x = Math.PI / 2;
+      bRing.position.set(wx, 0, frontZ + 0.0006);
+      group.add(bRing);
+
+      const bHole = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.0009, 0.0009, 0.0012, 8),
+        contactorBakeliteMat
+      );
+      bHole.rotation.x = Math.PI / 2;
+      bHole.position.set(wx, 0, frontZ + 0.0007);
+      group.add(bHole);
+    });
+
+    // Two moving plunger core tabs in the center (ivory/white)
+    [0.010, -0.006].forEach((wy) => {
+      const plunger = new THREE.Mesh(
+        new THREE.BoxGeometry(0.008, 0.011, 0.003),
+        new THREE.MeshStandardMaterial({ color: 0xede8dc, roughness: 0.5 })
+      );
+      plunger.position.set(0, wy, frontZ + 0.0008);
+      group.add(plunger);
     });
 
     // 5. Auxiliary Contact Block (Contactors 2 & 3 — Photo)
@@ -2143,7 +2463,7 @@
       const auxW = 0.032;
       const auxH = 0.034;
       const auxD = 0.016;
-      const auxY = 0.008; // Mounted over upper-middle section
+      const auxY = 0.002;
       const auxZ = frontZ + auxD / 2;
 
       const auxGroup = new THREE.Group();
@@ -2158,25 +2478,14 @@
       auxGroup.add(auxBase);
 
       // Clear acrylic transparent housing with glass highlights
-      const auxAcrylicMat = new THREE.MeshPhysicalMaterial({
-        color: 0xf8faff,
-        transmission: 0.78,
-        opacity: 0.65,
-        transparent: true,
-        roughness: 0.08,
-        ior: 1.52,
-        reflectivity: 0.8,
-        depthWrite: false,
-      });
-
       const auxBody = new THREE.Mesh(
         new THREE.BoxGeometry(auxW, auxH, auxD),
-        auxAcrylicMat
+        acrylicClearMat
       );
       auxBody.renderOrder = 2;
       auxGroup.add(auxBody);
 
-      // Polished acrylic edge highlights (subtle line box)
+      // Polished acrylic edge highlights
       const edgeGeo = new THREE.EdgesGeometry(new THREE.BoxGeometry(auxW, auxH, auxD));
       const edgeMat = new THREE.LineBasicMaterial({ color: 0x8899aa, linewidth: 1 });
       const edgeLines = new THREE.LineSegments(edgeGeo, edgeMat);
@@ -2193,23 +2502,13 @@
       clampPin.renderOrder = 4;
       auxGroup.add(clampPin);
 
-      // Center screw slot
-      const pinSlot = new THREE.Mesh(
-        new THREE.PlaneGeometry(0.005, 0.0012),
-        new THREE.MeshBasicMaterial({ color: 0x1a1a1a })
-      );
-      pinSlot.position.set(0, 0, auxD / 2 + 0.0046);
-      pinSlot.renderOrder = 5;
-      auxGroup.add(pinSlot);
-
-      // 4 Brass terminal screws with square washers on the front face of aux block (Photo)
+      // 4 Brass terminal screws with square washers on the front face of aux block
       [
-        [-auxW / 2 + 0.007, auxH / 2 - 0.007],
-        [auxW / 2 - 0.007, auxH / 2 - 0.007],
-        [-auxW / 2 + 0.007, -auxH / 2 + 0.007],
-        [auxW / 2 - 0.007, -auxH / 2 + 0.007],
+        [-auxW / 2 + 0.007, auxH / 2 - 0.006],
+        [auxW / 2 - 0.007, auxH / 2 - 0.006],
+        [-auxW / 2 + 0.007, -auxH / 2 + 0.006],
+        [auxW / 2 - 0.007, -auxH / 2 + 0.006],
       ].forEach(([asx, asy]) => {
-        // Square brass washer plate
         const sqW = new THREE.Mesh(
           new THREE.BoxGeometry(0.0065, 0.0065, 0.0016),
           contactorBrassMat
@@ -2218,7 +2517,6 @@
         sqW.renderOrder = 4;
         auxGroup.add(sqW);
 
-        // Brass pan-head screw
         const scr = new THREE.Mesh(
           new THREE.CylinderGeometry(0.0026, 0.0026, 0.0028, 12),
           contactorBrassMat
@@ -2228,7 +2526,6 @@
         scr.renderOrder = 5;
         auxGroup.add(scr);
 
-        // Cross slot
         const crs = new THREE.Mesh(
           new THREE.PlaneGeometry(0.0035, 0.001),
           new THREE.MeshBasicMaterial({ color: 0x222222 })
@@ -2238,10 +2535,10 @@
         auxGroup.add(crs);
       });
 
-      // Jumper wire from aux block top-left terminal curling into left terminal deck (Photo)
+      // Jumper wire from aux block top-left terminal into top terminal deck
       const auxJumperCurve = new THREE.CatmullRomCurve3([
-        new THREE.Vector3(-auxW / 2 + 0.007, auxH / 2 - 0.007, auxD / 2 + 0.002),
-        new THREE.Vector3(-auxW / 2 - 0.008, auxH / 2 + 0.008, auxD / 2 + 0.002),
+        new THREE.Vector3(-auxW / 2 + 0.007, auxH / 2 - 0.006, auxD / 2 + 0.002),
+        new THREE.Vector3(-auxW / 2 - 0.006, auxH / 2 + 0.008, auxD / 2 + 0.002),
         new THREE.Vector3(-0.026, 0.027, 0),
       ]);
       auxGroup.add(new THREE.Mesh(
