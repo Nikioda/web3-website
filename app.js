@@ -1545,53 +1545,54 @@
   let doorPivot;
   let potKnobMesh;
 
+  const SEAM_Z = -D / 2 + BASE_D; // = +0.035m (mating plane between base box and door)
+
   function buildHingedDoor() {
-    // Pivot along LEFT long side (Photo 8 shows door hinged on left swinging out)
+    // Pivot along LEFT long side at the seam mating plane
     doorPivot = new THREE.Group();
-    doorPivot.position.set(-W / 2 + WALL, 0, D / 2);
+    doorPivot.position.set(-W / 2, 0, SEAM_Z);
     rootGroup.add(doorPivot);
 
     const doorMeshGroup = new THREE.Group();
-    // Offset door mesh so pivot is at the hinge line
-    doorMeshGroup.position.set(W / 2 - WALL, 0, 0);
+    // Offset door mesh so pivot is right at the hinge axis
+    doorMeshGroup.position.set(W / 2, 0, 0);
     doorPivot.add(doorMeshGroup);
 
     // Deep clamshell door perimeter walls (35mm deep cover)
-    // Front face plate
+    // Front face plate at the front edge of door (local z = DOOR_D - 0.0015)
     const frontFace = new THREE.Mesh(
       new THREE.BoxGeometry(W, H, 0.003),
       steelPaintMat
     );
-    frontFace.position.set(0, 0, DOOR_D / 2);
+    frontFace.position.set(0, 0, DOOR_D - 0.0015);
     frontFace.castShadow = true;
     doorMeshGroup.add(frontFace);
 
-    // Door return flanges (top, bottom, right, left)
+    // Door return flanges (top, bottom, right, left) spanning from local z = 0 to DOOR_D
+    // Perfectly closing any gap against the base enclosure lip!
     const flangeMat = steelPaintMat;
 
     // Top flange
     const topFlange = new THREE.Mesh(new THREE.BoxGeometry(W, 0.003, DOOR_D), flangeMat);
-    topFlange.position.set(0, H / 2, 0);
+    topFlange.position.set(0, H / 2 - 0.0015, DOOR_D / 2);
     doorMeshGroup.add(topFlange);
 
     // Bottom flange
     const botFlange = new THREE.Mesh(new THREE.BoxGeometry(W, 0.003, DOOR_D), flangeMat);
-    botFlange.position.set(0, -H / 2, 0);
+    botFlange.position.set(0, -H / 2 + 0.0015, DOOR_D / 2);
     doorMeshGroup.add(botFlange);
 
     // Right flange (latch side)
     const rightFlange = new THREE.Mesh(new THREE.BoxGeometry(0.003, H, DOOR_D), flangeMat);
-    rightFlange.position.set(W / 2, 0, 0);
+    rightFlange.position.set(W / 2 - 0.0015, 0, DOOR_D / 2);
     doorMeshGroup.add(rightFlange);
 
     // Left flange (hinge side)
     const leftFlange = new THREE.Mesh(new THREE.BoxGeometry(0.003, H, DOOR_D), flangeMat);
-    leftFlange.position.set(-W / 2, 0, 0);
+    leftFlange.position.set(-W / 2 + 0.0015, 0, DOOR_D / 2);
     doorMeshGroup.add(leftFlange);
 
-
     // ——— A. MAIN CONTROL FACEPLATE (Vertical Portrait on the Left — Image 2) ———
-    // High-resolution canvas texture mapping all graphics, LCD, text, and LED indicators
     const faceplateMat = new THREE.MeshStandardMaterial({
       map: initFaceplateTexture(),
       roughness: 0.32,
@@ -1602,7 +1603,7 @@
     const fpH = 0.218;  // ~218mm tall (vertical portrait)
     const fpX = -0.134; // placed on the left side of the panel door
     const fpY = 0.008;  // centered vertically
-    const fpZ = DOOR_D / 2 + 0.002;
+    const fpZ = DOOR_D + 0.001; // directly on the front plate
 
     const faceplateMesh = new THREE.Mesh(
       new THREE.PlaneGeometry(fpW, fpH),
@@ -1653,7 +1654,6 @@
     // 4. Red AUTO / 3-PHASE Rocker Switch (Right, with O / I marking)
     const btnPhase3 = createSwitch(swW, swH, swD, btnOffMat, fpX + colStep * 1.5, swY, fpZ);
     btnPhase3.name = 'btn_phase3';
-    // Rocker circle/line graphic
     const rockerO = new THREE.Mesh(
       new THREE.RingGeometry(0.0018, 0.0026, 12),
       new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide })
@@ -1679,7 +1679,6 @@
     potKnobMesh.position.set(knobX, knobY, fpZ + 0.005);
     potKnobMesh.castShadow = true;
 
-    // Recessed cross (+) screwdriver slot on knob
     const slotMat = new THREE.MeshBasicMaterial({ color: 0x111111 });
     const slotH = new THREE.Mesh(new THREE.BoxGeometry(0.0018, 0.008, 0.010), slotMat);
     const slotV = new THREE.Mesh(new THREE.BoxGeometry(0.008, 0.0018, 0.010), slotMat);
@@ -1689,7 +1688,6 @@
     doorMeshGroup.add(potKnobMesh);
 
     // ——— D. SQUARE AMMETER KNOCKOUT WITH 4 TABS (In Center of Door — Image 2) ———
-    // In Image 2, this is a stamped sheet metal knockout plate surrounded by a slit groove and held by 4 tabs
     const ammeterGroup = new THREE.Group();
     const ammeterX = -0.012;
     const ammeterY = -0.040;
@@ -1699,37 +1697,29 @@
     const cutH = 0.064;
     const slitT = 0.0018;
 
-    // Slit groove segments (Top, Bottom, Left segments, Right segments with tab gaps)
     const slitMat = new THREE.MeshBasicMaterial({ color: 0x111317 });
 
-    // Top slit
     const slitTop = new THREE.Mesh(new THREE.PlaneGeometry(cutW, slitT), slitMat);
     slitTop.position.set(0, cutH / 2, 0.0006);
     ammeterGroup.add(slitTop);
 
-    // Bottom slit
     const slitBot = new THREE.Mesh(new THREE.PlaneGeometry(cutW, slitT), slitMat);
     slitBot.position.set(0, -cutH / 2, 0.0006);
     ammeterGroup.add(slitBot);
 
-    // Left and Right edge slits (with 2 tabs on each side as seen in Image 2)
     [-1, 1].forEach((side) => {
-      // Top segment
       const s1 = new THREE.Mesh(new THREE.PlaneGeometry(slitT, cutH * 0.28), slitMat);
       s1.position.set(side * cutH / 2, cutH * 0.35, 0.0006);
       ammeterGroup.add(s1);
 
-      // Middle segment between the two tabs
       const s2 = new THREE.Mesh(new THREE.PlaneGeometry(slitT, cutH * 0.28), slitMat);
       s2.position.set(side * cutH / 2, 0, 0.0006);
       ammeterGroup.add(s2);
 
-      // Bottom segment
       const s3 = new THREE.Mesh(new THREE.PlaneGeometry(slitT, cutH * 0.28), slitMat);
       s3.position.set(side * cutH / 2, -cutH * 0.35, 0.0006);
       ammeterGroup.add(s3);
 
-      // The 4 stamped tab notch marks extending slightly outward (Image 2)
       [-0.020, 0.020].forEach((ty) => {
         const tabNotch = new THREE.Mesh(new THREE.PlaneGeometry(0.004, 0.005), slitMat);
         tabNotch.position.set(side * (cutH / 2 + 0.002), ty, 0.0006);
@@ -1740,7 +1730,6 @@
     doorMeshGroup.add(ammeterGroup);
 
     // ——— E. EMBOSSED SQUARE RECESS (On the Right Side of Door — Image 2) ———
-    // In Image 2, there is an embossed stamped square plate on the right side
     const embossW = 0.076;
     const embossH = 0.076;
     const embossGroup = new THREE.Group();
@@ -1748,7 +1737,6 @@
     const embossY = -0.040;
     embossGroup.position.set(embossX, embossY, fpZ - 0.0005);
 
-    // Recessed plate (slightly darker shadow tone)
     const embossMesh = new THREE.Mesh(
       new THREE.PlaneGeometry(embossW, embossH),
       new THREE.MeshStandardMaterial({
@@ -1759,7 +1747,6 @@
     );
     embossGroup.add(embossMesh);
 
-    // Top & Left shadow edges (embossed inward)
     const shadowMat = new THREE.MeshBasicMaterial({ color: 0x99948a });
     const highlightMat = new THREE.MeshBasicMaterial({ color: 0xeeeae2 });
 
@@ -1771,7 +1758,6 @@
     leftShadow.position.set(-embossW / 2, 0, 0.001);
     embossGroup.add(leftShadow);
 
-    // Bottom & Right highlight edges
     const botHighlight = new THREE.Mesh(new THREE.PlaneGeometry(embossW, 0.0016), highlightMat);
     botHighlight.position.set(0, -embossH / 2, 0.001);
     embossGroup.add(botHighlight);
@@ -1783,12 +1769,11 @@
     doorMeshGroup.add(embossGroup);
 
     // ——— F. INSIDE OF DOOR: CONTROLLER PCB ENCLOSURE BOX (Photo 7) ———
-    // Beige plastic rectangular box mounted directly on inner face of door behind faceplate
     const pcbGroup = new THREE.Group();
     const pcbW = 0.102;
     const pcbH = 0.208;
     const pcbD = 0.030;
-    pcbGroup.position.set(fpX, fpY, -DOOR_D / 2 + pcbD / 2 + 0.002);
+    pcbGroup.position.set(fpX, fpY, DOOR_D - pcbD / 2 - 0.003);
 
     const pcbBody = new THREE.Mesh(
       new THREE.BoxGeometry(pcbW, pcbH, pcbD),
@@ -1796,7 +1781,6 @@
     );
     pcbGroup.add(pcbBody);
 
-    // Ventilation cooling ribs
     for (let ry = -pcbH / 2 + 0.02; ry <= pcbH / 2 - 0.02; ry += 0.012) {
       const rib = new THREE.Mesh(
         new THREE.BoxGeometry(pcbW - 0.016, 0.003, 0.002),
@@ -1806,7 +1790,6 @@
       pcbGroup.add(rib);
     }
 
-    // 6 corner mounting screws
     [[-1, -1], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 1]].forEach(([sx, sy]) => {
       const scr = new THREE.Mesh(
         new THREE.CylinderGeometry(0.003, 0.003, 0.003, 8),
@@ -1821,10 +1804,9 @@
       pcbGroup.add(scr);
     });
 
-    // Flexible black cable harness bridging from door PCB box to base enclosure
     const harnessCurve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(fpX, fpY - pcbH / 2, -DOOR_D / 2),
-      new THREE.Vector3(fpX - 0.05, fpY - pcbH / 2 - 0.04, -0.02),
+      new THREE.Vector3(fpX, fpY - pcbH / 2, DOOR_D - pcbD),
+      new THREE.Vector3(fpX - 0.05, fpY - pcbH / 2 - 0.04, 0.01),
       new THREE.Vector3(-0.12, -0.02, -D / 2 + BASE_D / 2),
     ]);
     const harnessMesh = new THREE.Mesh(
@@ -1836,10 +1818,10 @@
     doorMeshGroup.add(pcbGroup);
 
     // ——— G. TWO EXTERNAL STEEL BUTT HINGES (Photo 4) ———
-    // Mounted on the left edge connecting door to body
+    // Mounted on the left edge spanning the seam mating plane
     [-0.08, 0.08].forEach((hy) => {
       const hinge = buildHingeMesh();
-      hinge.position.set(-W / 2, hy, 0);
+      hinge.position.set(-W / 2, hy, SEAM_Z);
       rootGroup.add(hinge);
     });
 
@@ -1850,7 +1832,6 @@
     const swGroup = new THREE.Group();
     swGroup.position.set(x, y, z);
 
-    // Black plastic base frame
     const base = new THREE.Mesh(
       new THREE.BoxGeometry(w + 0.004, h + 0.004, 0.004),
       new THREE.MeshStandardMaterial({ color: 0x16181d, roughness: 0.7 })
@@ -1858,7 +1839,6 @@
     base.position.z = 0.002;
     swGroup.add(base);
 
-    // Beveled rocker / toggle button
     const btn = new THREE.Mesh(
       new THREE.BoxGeometry(w, h, d),
       colorMat
@@ -1882,39 +1862,47 @@
   function buildHingeMesh() {
     const hGroup = new THREE.Group();
 
-    // Hinge cylinder pin
+    // Hinge cylinder pin positioned directly on the seam line
     const pin = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.005, 0.005, 0.042, 16),
+      new THREE.CylinderGeometry(0.0045, 0.0045, 0.040, 16),
       chromeMat
     );
-    pin.position.set(0, 0, D / 2);
+    pin.position.set(0, 0, 0);
     hGroup.add(pin);
 
-    // Door leaf plate
+    // Door leaf plate (attaches to door, extends forward into z > 0)
     const leafDoor = new THREE.Mesh(
-      new THREE.BoxGeometry(0.02, 0.038, 0.003),
+      new THREE.BoxGeometry(0.003, 0.036, 0.016),
       chromeMat
     );
-    leafDoor.position.set(0.01, 0, D / 2);
+    leafDoor.position.set(0.0015, 0, 0.008);
     hGroup.add(leafDoor);
 
-    // Body leaf plate
+    // Body leaf plate (attaches to base enclosure, extends backward into z < 0)
     const leafBody = new THREE.Mesh(
-      new THREE.BoxGeometry(0.003, 0.038, 0.02),
+      new THREE.BoxGeometry(0.003, 0.036, 0.016),
       chromeMat
     );
-    leafBody.position.set(-0.001, 0, D / 2 - 0.01);
+    leafBody.position.set(0.0015, 0, -0.008);
     hGroup.add(leafBody);
 
-    // 4 Hinge screws
-    [-0.012, 0.012].forEach((sy) => {
-      const scr = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.0025, 0.0025, 0.003, 8),
+    // Hinge screws
+    [-0.011, 0.011].forEach((sy) => {
+      const scrDoor = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.0025, 0.0025, 0.002, 8),
         chromeMat
       );
-      scr.rotation.x = Math.PI / 2;
-      scr.position.set(0.012, sy, D / 2 + 0.002);
-      hGroup.add(scr);
+      scrDoor.rotation.z = Math.PI / 2;
+      scrDoor.position.set(-0.001, sy, 0.008);
+      hGroup.add(scrDoor);
+
+      const scrBody = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.0025, 0.0025, 0.002, 8),
+        chromeMat
+      );
+      scrBody.rotation.z = Math.PI / 2;
+      scrBody.position.set(-0.001, sy, -0.008);
+      hGroup.add(scrBody);
     });
 
     return hGroup;
